@@ -33,5 +33,3 @@ build/
 .vscode/
 
 .mvn
-
-/src/main/resources/application.properties
