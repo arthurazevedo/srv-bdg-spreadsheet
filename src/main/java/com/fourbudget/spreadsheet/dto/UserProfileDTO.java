@@ -8,6 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserProfileDTO {
 
+    private Long id;
     private String name;
     private String email;
 //    private String spreadSheetLink;
@@ -15,6 +16,6 @@ public class UserProfileDTO {
     public UserProfileDTO(UserProfile userProfile){
         this.name = userProfile.getName();
         this.email = userProfile.getEmail();
-
+        this.id = userProfile.getId();
     }
 }

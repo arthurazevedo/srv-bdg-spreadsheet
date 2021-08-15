@@ -1,6 +1,9 @@
 package com.fourbudget.spreadsheet.controller;
 
+import com.fourbudget.spreadsheet.domain.Spreadsheet;
+import com.fourbudget.spreadsheet.domain.SpreadsheetFromUser;
 import com.fourbudget.spreadsheet.domain.UserProfile;
+import com.fourbudget.spreadsheet.dto.SpreadsheetDTO;
 import com.fourbudget.spreadsheet.dto.UserProfileDTO;
 import com.fourbudget.spreadsheet.service.UserProfileService;
 import lombok.AllArgsConstructor;
@@ -24,9 +27,9 @@ public class UserProfileController {
     private final UserProfileService userProfileService;
 
     @PostMapping("/spreadsheet")
-    public ResponseEntity<Void> postSpreadsheetLink(@RequestHeader Long idProfileUser, @RequestBody String link){
+    public ResponseEntity<Void> postSpreadsheetLink(@RequestHeader Long idProfileUser, @RequestBody SpreadsheetDTO spreadsheetDto){
         try {
-            this.userProfileService.registerSpreadsheetLink(idProfileUser, link);
+            this.userProfileService.registerSpreadsheetLink(idProfileUser, spreadsheetDto);
         } catch (NoSuchElementException e){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
@@ -41,8 +44,14 @@ public class UserProfileController {
 
     @GetMapping
     public ResponseEntity<List<UserProfile>> getAllUsersProfiles(){
-        List<UserProfile> userProfilesList = this.userProfileService.findAll();
+        List<UserProfile> userProfilesList = this.userProfileService.findAllUsers();
         return new ResponseEntity(userProfilesList, HttpStatus.OK);
+    }
+
+    @GetMapping("/spreadsheet")
+    public ResponseEntity<List<SpreadsheetFromUser>> getAllSURelation(){
+        List<SpreadsheetFromUser> suRelationsList = this.userProfileService.findAllSURelations();
+        return new ResponseEntity(suRelationsList, HttpStatus.OK);
     }
 
     @GetMapping("/health")

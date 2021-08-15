@@ -1,7 +1,12 @@
 package com.fourbudget.spreadsheet.service;
 
+import com.fourbudget.spreadsheet.domain.Spreadsheet;
+import com.fourbudget.spreadsheet.domain.SpreadsheetFromUser;
 import com.fourbudget.spreadsheet.domain.UserProfile;
+import com.fourbudget.spreadsheet.dto.SpreadsheetDTO;
 import com.fourbudget.spreadsheet.dto.UserProfileDTO;
+import com.fourbudget.spreadsheet.repository.SpreadsheetFromUserRepository;
+import com.fourbudget.spreadsheet.repository.SpreadsheetRepository;
 import com.fourbudget.spreadsheet.repository.UserProfileRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -17,16 +22,25 @@ import java.util.Optional;
 public class UserProfileService {
 
     private final UserProfileRepository userProfileRepository;
+    private final SpreadsheetFromUserRepository spreadsheetFromUserRepository;
+    private final SpreadsheetRepository spreadsheetRepository;
 
-    public void registerSpreadsheetLink(Long idProfileUser, String link){
-
-        Optional<UserProfile> optUserProfile = this.userProfileRepository.findById(idProfileUser);
-        if(!optUserProfile.isPresent()){
-            throw new NoSuchElementException("UserProfile does not exist");
+    public void registerSpreadsheetLink(Long idProfileUser, SpreadsheetDTO spreadsheetDTO){
+        String link = spreadsheetDTO.getSpreadsheetLink();
+        if(!this.userProfileRepository.existsById(idProfileUser)){
+            throw new NoSuchElementException("User doesn't exist");
+        }
+        Optional<SpreadsheetFromUser> optSuRelation = this.spreadsheetFromUserRepository.findByUserProfileId(idProfileUser);
+        if(!optSuRelation.isPresent()) {
+            Spreadsheet spreadsheet = new Spreadsheet(link);
+            this.spreadsheetRepository.save(spreadsheet);
+            SpreadsheetFromUser suRelation = new SpreadsheetFromUser(idProfileUser, spreadsheet.getId());
+            this.spreadsheetFromUserRepository.save(suRelation);
         } else {
-            UserProfile userProfile = optUserProfile.get();
-            userProfile.setSpreadsheetLink(link);
-            this.userProfileRepository.save(userProfile);
+            SpreadsheetFromUser suRelation = optSuRelation.get();
+            Spreadsheet spreadsheet = this.spreadsheetRepository.findById(suRelation.getSpreadsheetId()).get();
+            spreadsheet.setSpreadsheetLink(link);
+            this.spreadsheetRepository.save(spreadsheet);
         }
     }
 
@@ -36,8 +50,12 @@ public class UserProfileService {
         return userProfile;
     }
 
-    public List<UserProfile> findAll(){
+    public List<UserProfile> findAllUsers(){
         return  this.userProfileRepository.findAll();
+    }
+
+    public List<SpreadsheetFromUser> findAllSURelations(){
+        return this.spreadsheetFromUserRepository.findAll();
     }
 
 }
