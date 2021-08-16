@@ -32,12 +32,6 @@ public class SpreadsheetController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public ResponseEntity<List<SpreadsheetFromUser>> getAllSURelations(){
-        List<SpreadsheetFromUser> suRelationsList = this.spreadsheetService.findAllSURelations();
-        return new ResponseEntity(suRelationsList, HttpStatus.OK);
-    }
-
     @GetMapping("/health")
     public ResponseEntity health(){
         return ResponseEntity.ok().body(new Date().toString());
