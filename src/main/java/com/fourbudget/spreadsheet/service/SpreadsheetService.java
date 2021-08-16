@@ -19,39 +19,33 @@ import java.util.Optional;
 @Log4j2
 @AllArgsConstructor
 @Service
-public class UserProfileService {
+public class SpreadsheetService {
 
     private final UserProfileRepository userProfileRepository;
     private final SpreadsheetFromUserRepository spreadsheetFromUserRepository;
     private final SpreadsheetRepository spreadsheetRepository;
 
-    public void registerSpreadsheetLink(Long idProfileUser, SpreadsheetDTO spreadsheetDTO){
+    public void registerSpreadsheetLink(Long idProfileUser, SpreadsheetDTO spreadsheetDTO) {
         String link = spreadsheetDTO.getSpreadsheetLink();
-        if(!this.userProfileRepository.existsById(idProfileUser)){
+        Optional<UserProfile> optUserProfile = this.userProfileRepository.findById(idProfileUser);
+        if(!optUserProfile.isPresent()) {
             throw new NoSuchElementException("User doesn't exist");
         }
+
+        UserProfile userProfile = optUserProfile.get();
         Optional<SpreadsheetFromUser> optSuRelation = this.spreadsheetFromUserRepository.findByUserProfileId(idProfileUser);
         if(!optSuRelation.isPresent()) {
             Spreadsheet spreadsheet = new Spreadsheet(link);
             this.spreadsheetRepository.save(spreadsheet);
-            SpreadsheetFromUser suRelation = new SpreadsheetFromUser(idProfileUser, spreadsheet.getId());
+            SpreadsheetFromUser suRelation = new SpreadsheetFromUser(userProfile, spreadsheet);
             this.spreadsheetFromUserRepository.save(suRelation);
         } else {
             SpreadsheetFromUser suRelation = optSuRelation.get();
-            Spreadsheet spreadsheet = this.spreadsheetRepository.findById(suRelation.getSpreadsheetId()).get();
+            Spreadsheet spreadsheet = suRelation.getSpreadsheet();
             spreadsheet.setSpreadsheetLink(link);
             this.spreadsheetRepository.save(spreadsheet);
+            this.spreadsheetFromUserRepository.save(suRelation);
         }
-    }
-
-    public UserProfile createUser(UserProfileDTO userProfileDto) {
-        UserProfile userProfile = new UserProfile(userProfileDto);
-        this.userProfileRepository.save(userProfile);
-        return userProfile;
-    }
-
-    public List<UserProfile> findAllUsers(){
-        return  this.userProfileRepository.findAll();
     }
 
     public List<SpreadsheetFromUser> findAllSURelations(){

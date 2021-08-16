@@ -11,22 +11,23 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "spreadsheet_from_user_profile")
+@Table(name = "su_relations")
 public class SpreadsheetFromUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long relationId;
 
-    @Column(unique = true, nullable = false)
-    private Long userProfileId;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "userProfileId")
+    private UserProfile userProfile;
 
-    @NotNull
-    @Column(unique = true)
-    private Long spreadsheetId;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "spreadsheetId")
+    private Spreadsheet spreadsheet;
 
-    public SpreadsheetFromUser(Long idProfileUser, Long spreadsheetId) {
-        this.userProfileId = idProfileUser;
-        this.spreadsheetId = spreadsheetId;
+    public SpreadsheetFromUser(UserProfile userProfile, Spreadsheet spreadsheet) {
+        this.userProfile = userProfile;
+        this.spreadsheet = spreadsheet;
     }
 }
