@@ -3,8 +3,7 @@ package com.fourbudget.spreadsheet.service;
 import com.fourbudget.spreadsheet.domain.Spreadsheet;
 import com.fourbudget.spreadsheet.domain.SpreadsheetFromUser;
 import com.fourbudget.spreadsheet.domain.UserProfile;
-import com.fourbudget.spreadsheet.dto.SpreadsheetDTO;
-import com.fourbudget.spreadsheet.dto.UserProfileDTO;
+import com.fourbudget.spreadsheet.dto.SpreadsheetUserDTO;
 import com.fourbudget.spreadsheet.repository.SpreadsheetFromUserRepository;
 import com.fourbudget.spreadsheet.repository.SpreadsheetRepository;
 import com.fourbudget.spreadsheet.repository.UserProfileRepository;
@@ -25,8 +24,9 @@ public class SpreadsheetService {
     private final SpreadsheetFromUserRepository spreadsheetFromUserRepository;
     private final SpreadsheetRepository spreadsheetRepository;
 
-    public void registerSpreadsheetLink(Long idProfileUser, SpreadsheetDTO spreadsheetDTO) {
-        String link = spreadsheetDTO.getSpreadsheetLink();
+    public void registerSpreadsheetLink(SpreadsheetUserDTO spreadsheetUserDTO) {
+        Long idProfileUser = spreadsheetUserDTO.getUserId();
+        String link = spreadsheetUserDTO.getSpreadsheetLink();
         Optional<UserProfile> optUserProfile = this.userProfileRepository.findById(idProfileUser);
         if(!optUserProfile.isPresent()) {
             throw new NoSuchElementException("User doesn't exist");

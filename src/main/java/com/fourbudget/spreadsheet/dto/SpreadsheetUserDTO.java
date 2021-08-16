@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SpreadsheetDTO {
+public class SpreadsheetUserDTO {
 
     private String spreadsheetLink;
+    private Long userId;
 }
