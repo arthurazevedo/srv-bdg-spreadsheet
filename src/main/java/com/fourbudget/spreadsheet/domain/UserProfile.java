@@ -16,7 +16,6 @@ import javax.validation.constraints.NotNull;
 public class UserProfile {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -26,9 +25,6 @@ public class UserProfile {
     @NotNull
     @Column(length = 50, unique = true, nullable = false)
     private String email;
-
-//    @Column(length = 200)
-//    private String spreadsheetLink;
 
     public UserProfile(UserProfileDTO upDto){
         this.name = upDto.getName();
