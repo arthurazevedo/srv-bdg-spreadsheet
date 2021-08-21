@@ -1,9 +1,9 @@
 package com.fourbudget.spreadsheet.service;
 
-import com.fourbudget.spreadsheet.domain.Spreadsheet;
-import com.fourbudget.spreadsheet.domain.SpreadsheetFromUser;
-import com.fourbudget.spreadsheet.domain.UserProfile;
-import com.fourbudget.spreadsheet.dto.SpreadsheetUserDTO;
+import com.fourbudget.spreadsheet.model.Spreadsheet;
+import com.fourbudget.spreadsheet.model.SpreadsheetFromUser;
+import com.fourbudget.spreadsheet.model.UserProfile;
+import com.fourbudget.spreadsheet.model.dto.SpreadsheetUserDTO;
 import com.fourbudget.spreadsheet.repository.SpreadsheetFromUserRepository;
 import com.fourbudget.spreadsheet.repository.SpreadsheetRepository;
 import com.fourbudget.spreadsheet.repository.UserProfileRepository;

@@ -1,6 +1,6 @@
 package com.fourbudget.spreadsheet.controller;
 
-import com.fourbudget.spreadsheet.dto.SpreadsheetUserDTO;
+import com.fourbudget.spreadsheet.model.dto.SpreadsheetUserDTO;
 import com.fourbudget.spreadsheet.service.SpreadsheetService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

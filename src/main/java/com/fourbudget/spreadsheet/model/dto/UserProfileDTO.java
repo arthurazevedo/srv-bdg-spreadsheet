@@ -1,6 +1,6 @@
-package com.fourbudget.spreadsheet.dto;
+package com.fourbudget.spreadsheet.model.dto;
 
-import com.fourbudget.spreadsheet.domain.UserProfile;
+import com.fourbudget.spreadsheet.model.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

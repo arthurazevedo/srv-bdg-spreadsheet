@@ -1,6 +1,6 @@
 package com.fourbudget.spreadsheet.repository;
 
-import com.fourbudget.spreadsheet.domain.SpreadsheetFromUser;
+import com.fourbudget.spreadsheet.model.SpreadsheetFromUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

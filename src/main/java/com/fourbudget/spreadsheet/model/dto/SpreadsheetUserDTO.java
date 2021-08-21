@@ -1,4 +1,4 @@
-package com.fourbudget.spreadsheet.dto;
+package com.fourbudget.spreadsheet.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
