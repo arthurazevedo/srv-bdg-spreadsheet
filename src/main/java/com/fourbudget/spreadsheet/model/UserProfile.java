@@ -26,7 +26,7 @@ public class UserProfile {
     @Column(length = 50, unique = true, nullable = false)
     private String email;
 
-    public UserProfile(UserProfileDTO upDto){
+    public UserProfile(UserProfileDTO upDto) {
         this.name = upDto.getName();
         this.email = upDto.getEmail();
         this.id = upDto.getId();
