@@ -27,7 +27,7 @@ public class UserProfileController {
         UserProfile userProfile = null;
         try{
             userProfile = this.userProfileService.createUser(userProfileDto);
-        } catch (KeyAlreadyExistsException e) {
+        } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } finally {
             return new ResponseEntity(userProfile, HttpStatus.CREATED);

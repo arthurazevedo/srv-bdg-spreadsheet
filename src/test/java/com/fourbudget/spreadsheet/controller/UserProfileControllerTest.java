@@ -1,7 +1,6 @@
 package com.fourbudget.spreadsheet.controller;
 
 import com.fourbudget.spreadsheet.model.UserProfile;
-import com.fourbudget.spreadsheet.model.dto.SpreadsheetUserDTO;
 import com.fourbudget.spreadsheet.model.dto.UserProfileDTO;
 import com.fourbudget.spreadsheet.service.UserProfileService;
 import org.junit.jupiter.api.Assertions;
@@ -13,11 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.io.UnsupportedEncodingException;
-
-import static org.mockito.ArgumentMatchers.any;
 import static com.fourbudget.spreadsheet.util.AsJsonToStringUtil.asJsonString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -44,12 +39,11 @@ public class UserProfileControllerTest {
         given(this.upService.createUser(upTest)).willReturn(userProfileTest);
 
         MvcResult result = this.mockMvc.perform(post("/user_profile")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(asJsonString(upTest)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(upTest)))
                 .andExpect(status().isCreated())
                 .andDo(print())
                 .andReturn();
         Assertions.assertEquals(result.getResponse().getContentAsString(), asJsonString(userProfileTest));
     }
-
 }

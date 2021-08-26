@@ -16,7 +16,7 @@ public class UserProfileService {
 
     public UserProfile createUser(UserProfileDTO userProfileDto) {
         if (this.userProfileRepository.existsById(userProfileDto.getId())){
-            throw new KeyAlreadyExistsException();
+            throw new IllegalArgumentException();
         }
         UserProfile userProfile = new UserProfile(userProfileDto);
         this.userProfileRepository.save(userProfile);
