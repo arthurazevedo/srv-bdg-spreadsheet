@@ -4,10 +4,8 @@ import com.fourbudget.spreadsheet.model.UserProfile;
 import com.fourbudget.spreadsheet.model.dto.UserProfileDTO;
 import com.fourbudget.spreadsheet.repository.UserProfileRepository;
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-@Log4j2
 @AllArgsConstructor
 @Service
 public class UserProfileService {
