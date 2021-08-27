@@ -28,13 +28,13 @@ public class SpreadsheetService {
         Long idProfileUser = spreadsheetUserDTO.getUserId();
         String link = spreadsheetUserDTO.getSpreadsheetLink();
         Optional<UserProfile> optUserProfile = this.userProfileRepository.findById(idProfileUser);
-        if(!optUserProfile.isPresent()) {
+        if (!optUserProfile.isPresent()) {
             throw new NoSuchElementException("User doesn't exist");
         }
 
         UserProfile userProfile = optUserProfile.get();
         Optional<SpreadsheetFromUser> optSuRelation = this.spreadsheetFromUserRepository.findByUserProfileId(idProfileUser);
-        if(!optSuRelation.isPresent()) {
+        if (!optSuRelation.isPresent()) {
             Spreadsheet spreadsheet = new Spreadsheet(link);
             this.spreadsheetRepository.save(spreadsheet);
             SpreadsheetFromUser suRelation = new SpreadsheetFromUser(userProfile, spreadsheet);
@@ -48,8 +48,12 @@ public class SpreadsheetService {
         }
     }
 
-    public List<SpreadsheetFromUser> findAllSURelations(){
+    public List<SpreadsheetFromUser> findAllSURelations() {
         return this.spreadsheetFromUserRepository.findAll();
     }
 
+    public Spreadsheet findByUserId(Long userId) {
+        return this.spreadsheetFromUserRepository.findByUserProfileId(userId).
+                orElseThrow(() -> new NoSuchElementException("User doesn't exist")).getSpreadsheet();
+    }
 }
