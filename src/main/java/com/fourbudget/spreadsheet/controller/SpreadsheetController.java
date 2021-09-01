@@ -1,6 +1,7 @@
 package com.fourbudget.spreadsheet.controller;
 
 import com.fourbudget.spreadsheet.model.Spreadsheet;
+import com.fourbudget.spreadsheet.model.SpreadsheetFromUser;
 import com.fourbudget.spreadsheet.model.dto.SpreadsheetUserDTO;
 import com.fourbudget.spreadsheet.service.SpreadsheetService;
 import lombok.AllArgsConstructor;
@@ -20,13 +21,16 @@ public class SpreadsheetController {
     private final SpreadsheetService spreadsheetService;
 
     @PostMapping
-    public ResponseEntity<Void> postSpreadsheetLink(@RequestBody SpreadsheetUserDTO spreadsheetUserDto){
+    public ResponseEntity<SpreadsheetFromUser> postSpreadsheetLink(@RequestBody SpreadsheetUserDTO spreadsheetUserDto) {
+        SpreadsheetFromUser suRelation = null;
         try {
-            this.spreadsheetService.registerSpreadsheetLink(spreadsheetUserDto);
-        } catch (NoSuchElementException e){
+            suRelation = this.spreadsheetService.registerSpreadsheetLink(spreadsheetUserDto);
+        } catch (NoSuchElementException e) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
+        } finally {
+            return new ResponseEntity(suRelation, HttpStatus.CREATED);
         }
-        return new ResponseEntity(HttpStatus.CREATED);
+
     }
 
 
@@ -37,7 +41,7 @@ public class SpreadsheetController {
     }
 
     @GetMapping("/health")
-    public ResponseEntity health(){
+    public ResponseEntity health() {
         return ResponseEntity.ok().body(new Date().toString());
     }
 }
