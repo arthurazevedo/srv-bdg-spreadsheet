@@ -1,5 +1,6 @@
 package com.fourbudget.spreadsheet.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "spreadsheets")
 public class Spreadsheet {
 
