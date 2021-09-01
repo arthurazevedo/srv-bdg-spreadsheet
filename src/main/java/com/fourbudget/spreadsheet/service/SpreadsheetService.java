@@ -6,6 +6,7 @@ import com.fourbudget.spreadsheet.model.Spreadsheet;
 import com.fourbudget.spreadsheet.model.SpreadsheetFromUser;
 import com.fourbudget.spreadsheet.model.UserProfile;
 import com.fourbudget.spreadsheet.model.dto.SpreadsheetUserDTO;
+import com.fourbudget.spreadsheet.repository.ProductRepository;
 import com.fourbudget.spreadsheet.repository.SpreadsheetFromUserRepository;
 import com.fourbudget.spreadsheet.repository.SpreadsheetRepository;
 import com.fourbudget.spreadsheet.repository.UserProfileRepository;
@@ -27,6 +28,7 @@ public class SpreadsheetService {
     private final UserProfileRepository userProfileRepository;
     private final SpreadsheetFromUserRepository spreadsheetFromUserRepository;
     private final SpreadsheetRepository spreadsheetRepository;
+    private final ProductRepository productRepository;
 
     public SpreadsheetFromUser registerSpreadsheetLink(SpreadsheetUserDTO spreadsheetUserDTO) throws IOException, GeneralSecurityException {
         Long idProfileUser = spreadsheetUserDTO.getUserId();
@@ -39,20 +41,21 @@ public class SpreadsheetService {
         UserProfile userProfile = optUserProfile.get();
         Optional<SpreadsheetFromUser> optSuRelation = this.spreadsheetFromUserRepository.findByUserProfileId(idProfileUser);
         SpreadsheetFromUser suRelation;
+        Spreadsheet spreadsheet;
         if (!optSuRelation.isPresent()) {
-            Spreadsheet spreadsheet = new Spreadsheet(link);
+            spreadsheet = new Spreadsheet(link);
             this.spreadsheetRepository.save(spreadsheet);
             suRelation = new SpreadsheetFromUser(userProfile, spreadsheet);
         } else {
             suRelation = optSuRelation.get();
-            Spreadsheet spreadsheet = suRelation.getSpreadsheet();
+            spreadsheet = suRelation.getSpreadsheet();
             spreadsheet.setSpreadsheetLink(link);
             this.spreadsheetRepository.save(spreadsheet);
         }
 
         this.spreadsheetFromUserRepository.save(suRelation);
 
-        populate(spreadsheetUserDTO.getSpreadsheetLink());
+        populate(spreadsheet.getSpreadsheetLink(), idProfileUser);
 
         return suRelation;
     }
@@ -61,7 +64,7 @@ public class SpreadsheetService {
         return this.spreadsheetFromUserRepository.findAll();
     }
 
-    public void populate(String spreadsheet) throws IOException, GeneralSecurityException {
+    public void populate(String spreadsheet, Long userId) throws IOException, GeneralSecurityException {
         Sheets sheets = GoogleAuthorizeUtil.getSheetsService();
         final String range = "A:Z";
 
@@ -72,12 +75,12 @@ public class SpreadsheetService {
         List<List<Object>> values = response.getValues();
 
         if (values == null || values.isEmpty()) {
-            System.out.println("No data found.");
+            throw new IOException("Spreadsheet is empty");
         } else {
             for (int i = 1; i < values.size(); i++) {
                 List<Object> column = values.get(i);
-                Product product = new Product(column.get(0).toString(), Double.parseDouble(column.get(1).toString()), column.get(2).toString());
-                System.out.println(product);
+                Product product = new Product(userId, column.get(0).toString(), Double.parseDouble(column.get(1).toString()), column.get(2).toString());
+                this.productRepository.save(product);
             }
         }
     }
