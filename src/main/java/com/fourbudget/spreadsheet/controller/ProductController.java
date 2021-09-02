@@ -1,7 +1,8 @@
 package com.fourbudget.spreadsheet.controller;
 
 import com.fourbudget.spreadsheet.model.Product;
-import com.fourbudget.spreadsheet.repository.ProductRepository;
+import com.fourbudget.spreadsheet.model.Servico;
+import com.fourbudget.spreadsheet.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +14,15 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController {
 
-    ProductRepository productRepository;
+    private final ProductService productService;
 
-    @GetMapping("/user/{userId}")
-    public List<Product> getProducts(@PathVariable Long userId){
-        return productRepository.findByUserId(userId);
+    @GetMapping("/products/{userId}")
+    public List<Product> getProducts(@PathVariable Long userId) {
+        return this.productService.getProductsList(userId);
+    }
+
+    @GetMapping("/services/{userId}")
+    public List<Servico> getServices(@PathVariable Long userId) {
+        return this.productService.getServicosList(userId);
     }
 }

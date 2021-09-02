@@ -1,15 +1,9 @@
 package com.fourbudget.spreadsheet.service;
 
 import com.fourbudget.spreadsheet.config.GoogleAuthorizeUtil;
-import com.fourbudget.spreadsheet.model.Product;
-import com.fourbudget.spreadsheet.model.Spreadsheet;
-import com.fourbudget.spreadsheet.model.SpreadsheetFromUser;
-import com.fourbudget.spreadsheet.model.UserProfile;
+import com.fourbudget.spreadsheet.model.*;
 import com.fourbudget.spreadsheet.model.dto.SpreadsheetUserDTO;
-import com.fourbudget.spreadsheet.repository.ProductRepository;
-import com.fourbudget.spreadsheet.repository.SpreadsheetFromUserRepository;
-import com.fourbudget.spreadsheet.repository.SpreadsheetRepository;
-import com.fourbudget.spreadsheet.repository.UserProfileRepository;
+import com.fourbudget.spreadsheet.repository.*;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import lombok.AllArgsConstructor;
@@ -29,6 +23,7 @@ public class SpreadsheetService {
     private final SpreadsheetFromUserRepository spreadsheetFromUserRepository;
     private final SpreadsheetRepository spreadsheetRepository;
     private final ProductRepository productRepository;
+    private final ServicoRepository servicoRepository;
 
     public SpreadsheetFromUser registerSpreadsheetLink(SpreadsheetUserDTO spreadsheetUserDTO) throws IOException, GeneralSecurityException {
         Long idProfileUser = spreadsheetUserDTO.getUserId();
@@ -54,7 +49,6 @@ public class SpreadsheetService {
         }
 
         this.spreadsheetFromUserRepository.save(suRelation);
-
         populate(spreadsheet.getSpreadsheetLink(), idProfileUser);
 
         return suRelation;
@@ -64,9 +58,14 @@ public class SpreadsheetService {
         return this.spreadsheetFromUserRepository.findAll();
     }
 
-    public void populate(String spreadsheet, Long userId) throws IOException, GeneralSecurityException {
+    public void populate(String spreadsheet, Long userId) throws GeneralSecurityException, IOException {
+        this.populateProducts(spreadsheet, userId, "products");
+        this.populateProducts(spreadsheet, userId, "services");
+    }
+
+    private void populateProducts(String spreadsheet, Long userId, String tab) throws IOException, GeneralSecurityException {
         Sheets sheets = GoogleAuthorizeUtil.getSheetsService();
-        final String range = "A:Z";
+        final String range = "'" + tab + "'!A:Z";
 
         ValueRange response = sheets.spreadsheets().values()
                 .get(spreadsheet, range)
@@ -79,10 +78,14 @@ public class SpreadsheetService {
         } else {
             for (int i = 1; i < values.size(); i++) {
                 List<Object> column = values.get(i);
-                Product product = new Product(userId, column.get(0).toString(), Double.parseDouble(column.get(1).toString()), column.get(2).toString());
-                this.productRepository.save(product);
+                if (tab.equals("products")) {
+                    Product product = new Product(userId, column.get(0).toString(), Double.parseDouble(column.get(1).toString()), column.get(2).toString());
+                    this.productRepository.save(product);
+                } else if (tab.equals("services")) {
+                    Servico servico = new Servico(userId, column.get(0).toString(), Double.parseDouble(column.get(1).toString()), column.get(2).toString());
+                    this.servicoRepository.save(servico);
+                }
             }
         }
     }
-
 }
