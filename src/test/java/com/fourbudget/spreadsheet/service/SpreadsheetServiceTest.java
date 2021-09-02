@@ -13,9 +13,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -42,7 +45,7 @@ public class SpreadsheetServiceTest {
     }
 
     @Test
-    public void succesfullyCreateSURelation() {
+    public void succesfullyCreateSURelation() throws IOException, GeneralSecurityException {
         UserProfile userTest = new UserProfile(new Long(1), "test", "test@test");
         Optional<UserProfile> optUserProfile = Optional.of(userTest);
         when(this.userProfileRepository.findById(userTest.getId())).thenReturn(optUserProfile);

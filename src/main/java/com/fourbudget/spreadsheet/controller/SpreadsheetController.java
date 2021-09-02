@@ -25,7 +25,7 @@ public class SpreadsheetController {
         SpreadsheetFromUser suRelation = null;
         try {
             suRelation = this.spreadsheetService.registerSpreadsheetLink(spreadsheetUserDto);
-        } catch (NoSuchElementException e) {
+        } catch (Exception e) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         } finally {
             return new ResponseEntity(suRelation, HttpStatus.CREATED);
