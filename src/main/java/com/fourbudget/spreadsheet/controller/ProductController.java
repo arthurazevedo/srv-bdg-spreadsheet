@@ -1,13 +1,22 @@
 package com.fourbudget.spreadsheet.controller;
 
+import com.fourbudget.spreadsheet.model.Product;
+import com.fourbudget.spreadsheet.repository.ProductRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin
 @RestController
 @AllArgsConstructor
-@RequestMapping("/spreadsheet")
+@RequestMapping("/product")
 public class ProductController {
+
+    ProductRepository productRepository;
+
+    @GetMapping("/user/{userId}")
+    public List<Product> getProducts(@PathVariable Long userId){
+        return productRepository.findByUserId(userId);
+    }
 }
