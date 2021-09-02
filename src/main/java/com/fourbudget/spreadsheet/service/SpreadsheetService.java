@@ -32,7 +32,9 @@ public class SpreadsheetService {
 
         UserProfile userProfile = optUserProfile.get();
         Optional<SpreadsheetFromUser> optSuRelation = this.spreadsheetFromUserRepository.findByUserProfileId(idProfileUser);
+
         SpreadsheetFromUser suRelation;
+
         if (!optSuRelation.isPresent()) {
             Spreadsheet spreadsheet = new Spreadsheet(link);
             this.spreadsheetRepository.save(spreadsheet);
@@ -51,4 +53,8 @@ public class SpreadsheetService {
         return this.spreadsheetFromUserRepository.findAll();
     }
 
+    public Spreadsheet findByUserId(Long userId) {
+        return this.spreadsheetFromUserRepository.findByUserProfileId(userId).
+                orElseThrow(() -> new NoSuchElementException("User doesn't exist")).getSpreadsheet();
+    }
 }

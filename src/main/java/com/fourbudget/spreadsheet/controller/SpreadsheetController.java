@@ -1,5 +1,6 @@
 package com.fourbudget.spreadsheet.controller;
 
+import com.fourbudget.spreadsheet.model.Spreadsheet;
 import com.fourbudget.spreadsheet.model.SpreadsheetFromUser;
 import com.fourbudget.spreadsheet.model.dto.SpreadsheetUserDTO;
 import com.fourbudget.spreadsheet.service.SpreadsheetService;
@@ -30,6 +31,13 @@ public class SpreadsheetController {
             return new ResponseEntity(suRelation, HttpStatus.CREATED);
         }
 
+    }
+
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Spreadsheet> getSpreadSheetByUserId(@PathVariable Long userId) {
+        Spreadsheet spreadsheet = this.spreadsheetService.findByUserId(userId);
+        return new ResponseEntity<>(spreadsheet, HttpStatus.OK);
     }
 
     @GetMapping("/health")
