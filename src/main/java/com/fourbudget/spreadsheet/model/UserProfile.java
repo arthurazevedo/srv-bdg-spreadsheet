@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
@@ -18,11 +17,9 @@ public class UserProfile {
     @Id
     private Long id;
 
-    @NotNull
     @Column(length = 50, nullable = false)
     private String name;
 
-    @NotNull
     @Column(length = 50, unique = true, nullable = false)
     private String email;
 

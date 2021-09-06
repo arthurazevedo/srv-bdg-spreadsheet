@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MySystemException extends RuntimeException {
+public class MySystemException extends UnsupportedOperationException {
     private HttpStatus status;
     private String message;
 }
