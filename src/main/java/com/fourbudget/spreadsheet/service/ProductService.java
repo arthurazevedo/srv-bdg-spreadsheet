@@ -2,9 +2,7 @@ package com.fourbudget.spreadsheet.service;
 
 import com.fourbudget.spreadsheet.config.error.MySystemException;
 import com.fourbudget.spreadsheet.model.Product;
-import com.fourbudget.spreadsheet.model.Services;
 import com.fourbudget.spreadsheet.repository.ProductRepository;
-import com.fourbudget.spreadsheet.repository.ServicesRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,6 +21,12 @@ public class ProductService {
     public List<Product> getProductsList(Long userId) {
         Optional<List<Product>> productsOptional =  this.productRepository.findByUserId(userId);
 
-        return productsOptional.orElseThrow(() -> new MySystemException(HttpStatus.NO_CONTENT, ERROR_PRODUCTS_NOT_FOUND));
+        List<Product> products = productsOptional.orElseThrow(() -> new MySystemException(HttpStatus.NO_CONTENT, ERROR_PRODUCTS_NOT_FOUND));
+
+        if (products.isEmpty()) {
+            throw new MySystemException(HttpStatus.NO_CONTENT, ERROR_PRODUCTS_NOT_FOUND);
+        }
+
+        return products;
     }
 }

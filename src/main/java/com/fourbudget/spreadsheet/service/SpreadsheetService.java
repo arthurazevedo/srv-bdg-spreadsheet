@@ -1,9 +1,17 @@
 package com.fourbudget.spreadsheet.service;
 
 import com.fourbudget.spreadsheet.config.GoogleAuthorizeUtil;
-import com.fourbudget.spreadsheet.model.*;
+import com.fourbudget.spreadsheet.model.Product;
+import com.fourbudget.spreadsheet.model.Services;
+import com.fourbudget.spreadsheet.model.Spreadsheet;
+import com.fourbudget.spreadsheet.model.SpreadsheetFromUser;
+import com.fourbudget.spreadsheet.model.UserProfile;
 import com.fourbudget.spreadsheet.model.dto.SpreadsheetUserDTO;
-import com.fourbudget.spreadsheet.repository.*;
+import com.fourbudget.spreadsheet.repository.ProductRepository;
+import com.fourbudget.spreadsheet.repository.ServicesRepository;
+import com.fourbudget.spreadsheet.repository.SpreadsheetFromUserRepository;
+import com.fourbudget.spreadsheet.repository.SpreadsheetRepository;
+import com.fourbudget.spreadsheet.repository.UserProfileRepository;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import lombok.AllArgsConstructor;
@@ -24,6 +32,10 @@ public class SpreadsheetService {
     private final SpreadsheetRepository spreadsheetRepository;
     private final ProductRepository productRepository;
     private final ServicesRepository servicesRepository;
+
+    private final int FIELD_NAME = 0;
+    private final int FIELD_PRICE = 1;
+    private final int FIELD_DESCRIPTION = 2;
 
     public SpreadsheetFromUser registerSpreadsheetLink(SpreadsheetUserDTO spreadsheetUserDTO) throws IOException, GeneralSecurityException {
         Long idProfileUser = spreadsheetUserDTO.getUserId();
@@ -81,10 +93,10 @@ public class SpreadsheetService {
             for (int i = 1; i < values.size(); i++) {
                 List<Object> column = values.get(i);
                 if (tab.equals("products")) {
-                    Product product = new Product(userId, column.get(0).toString(), Double.parseDouble(column.get(1).toString()), column.get(2).toString());
+                    Product product = new Product(userId, column.get(FIELD_NAME).toString(), Double.parseDouble(column.get(FIELD_PRICE).toString()), column.get(FIELD_DESCRIPTION).toString());
                     this.productRepository.save(product);
                 } else if (tab.equals("services")) {
-                    Services services = new Services(userId, column.get(0).toString(), Double.parseDouble(column.get(1).toString()), column.get(2).toString());
+                    Services services = new Services(userId, column.get(FIELD_NAME).toString(), Double.parseDouble(column.get(FIELD_PRICE).toString()), column.get(FIELD_DESCRIPTION).toString());
                     this.servicesRepository.save(services);
                 }
             }
