@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Table(name = "services")
 @ToString
-public class Servico {
+public class Services {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,7 +33,7 @@ public class Servico {
     @Column(length = 200)
     private String description;
 
-    public Servico(Long userId, String name, Double price, String description) {
+    public Services(Long userId, String name, Double price, String description) {
         this.userId = userId;
         this.name = name;
         this.price = price;

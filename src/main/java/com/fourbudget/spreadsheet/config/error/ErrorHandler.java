@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @ControllerAdvice
 public class ErrorHandler {
@@ -30,6 +31,12 @@ public class ErrorHandler {
     protected ResponseEntity<ErrorResponse> handleDataException() {
         ErrorResponse error = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ERROR_DATABASE);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    protected ResponseEntity<ErrorResponse> handleNoSuch(NoSuchElementException exception) {
+        ErrorResponse error = new ErrorResponse(HttpStatus.NO_CONTENT, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(error);
     }
 
     private ResponseEntity<ErrorResponse> handleErrors(MySystemException exception) {

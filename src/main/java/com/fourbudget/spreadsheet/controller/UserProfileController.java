@@ -15,7 +15,7 @@ import javax.validation.Valid;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/user_profile")
+@RequestMapping("/user-profile")
 public class UserProfileController {
 
     private final UserProfileService userProfileService;

@@ -23,7 +23,7 @@ public class SpreadsheetService {
     private final SpreadsheetFromUserRepository spreadsheetFromUserRepository;
     private final SpreadsheetRepository spreadsheetRepository;
     private final ProductRepository productRepository;
-    private final ServicoRepository servicoRepository;
+    private final ServicesRepository servicesRepository;
 
     public SpreadsheetFromUser registerSpreadsheetLink(SpreadsheetUserDTO spreadsheetUserDTO) throws IOException, GeneralSecurityException {
         Long idProfileUser = spreadsheetUserDTO.getUserId();
@@ -84,8 +84,8 @@ public class SpreadsheetService {
                     Product product = new Product(userId, column.get(0).toString(), Double.parseDouble(column.get(1).toString()), column.get(2).toString());
                     this.productRepository.save(product);
                 } else if (tab.equals("services")) {
-                    Servico servico = new Servico(userId, column.get(0).toString(), Double.parseDouble(column.get(1).toString()), column.get(2).toString());
-                    this.servicoRepository.save(servico);
+                    Services services = new Services(userId, column.get(0).toString(), Double.parseDouble(column.get(1).toString()), column.get(2).toString());
+                    this.servicesRepository.save(services);
                 }
             }
         }

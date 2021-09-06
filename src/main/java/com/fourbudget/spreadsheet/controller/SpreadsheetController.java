@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 @RestController
 @AllArgsConstructor
@@ -19,27 +21,15 @@ public class SpreadsheetController {
     private final SpreadsheetService spreadsheetService;
 
     @PostMapping
-    public ResponseEntity<SpreadsheetFromUser> postSpreadsheetLink(@RequestBody SpreadsheetUserDTO spreadsheetUserDto) {
-        SpreadsheetFromUser suRelation = null;
-        try {
-            suRelation = this.spreadsheetService.registerSpreadsheetLink(spreadsheetUserDto);
-        } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        } finally {
-            return new ResponseEntity(suRelation, HttpStatus.CREATED);
-        }
+    public ResponseEntity<SpreadsheetFromUser> postSpreadsheetLink(@RequestBody @Valid SpreadsheetUserDTO spreadsheetUserDto) throws GeneralSecurityException, IOException {
+        SpreadsheetFromUser suRelation = this.spreadsheetService.registerSpreadsheetLink(spreadsheetUserDto);
 
+        return ResponseEntity.status(HttpStatus.CREATED).body(suRelation);
     }
-
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<Spreadsheet> getSpreadSheetByUserId(@PathVariable Long userId) {
         Spreadsheet spreadsheet = this.spreadsheetService.findByUserId(userId);
         return new ResponseEntity<>(spreadsheet, HttpStatus.OK);
-    }
-
-    @GetMapping("/health")
-    public ResponseEntity health() {
-        return ResponseEntity.ok().body(new Date().toString());
     }
 }
