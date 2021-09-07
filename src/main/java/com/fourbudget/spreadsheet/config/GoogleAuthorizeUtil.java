@@ -1,50 +1,63 @@
 package com.fourbudget.spreadsheet.config;
 
+import com.fourbudget.spreadsheet.config.error.MySystemException;
 import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
-import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.store.FileDataStoreFactory;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
+import org.springframework.http.HttpStatus;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
 
 public class GoogleAuthorizeUtil {
-    private static final String CREDENTIALS_PATH = "/client_secret_980422953744-e0cm2irm02mnpatdfg4jgkkoe9jtbbbj.apps.googleusercontent.com.json";
 
     private static final String APPLICATION_NAME = "Budget Generator";
 
-    private static Credential authorize() throws IOException, GeneralSecurityException {
-        InputStream credentialPaths = GoogleAuthorizeUtil.class.getResourceAsStream(CREDENTIALS_PATH);
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JacksonFactory.getDefaultInstance(), new InputStreamReader(credentialPaths));
+    private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
+    private static final String KEY_FILE_LOCATION = "budget-generator-3a45048e60ae.p12";
+    private static final String SERVICE_ACCOUNT_EMAIL = "budget-generator-591@budget-generator.iam.gserviceaccount.com";
+    private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS);
 
-        List<String> scopes = Collections.singletonList(SheetsScopes.SPREADSHEETS);
+    private static Credential authorize() throws IOException, GeneralSecurityException, URISyntaxException {
+        URL fileURL = GoogleAuthorizeUtil.class.getClassLoader().getResource(KEY_FILE_LOCATION);
 
-        GoogleAuthorizationCodeFlow flow =
-                new GoogleAuthorizationCodeFlow.Builder(
-                        GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance(), clientSecrets, scopes)
-                        .setDataStoreFactory(new FileDataStoreFactory(new File("tokens")))
-                        .setAccessType("offline")
-                        .build();
+        if(fileURL==null) {
+            fileURL = (new File("tokens/" + KEY_FILE_LOCATION)).toURI().toURL();
+        }
 
-        return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver())
-                .authorize("user");
+        HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+        return new GoogleCredential.Builder()
+                .setTransport(httpTransport)
+                .setJsonFactory(JSON_FACTORY)
+                .setServiceAccountId(SERVICE_ACCOUNT_EMAIL)
+                .setServiceAccountPrivateKeyFromP12File(new File(fileURL.toURI()))
+                .setServiceAccountScopes(SCOPES)
+                .build();
     }
 
     public static Sheets getSheetsService() throws IOException, GeneralSecurityException {
-        Credential credential = authorize();
-        return new Sheets.Builder(GoogleNetHttpTransport.newTrustedTransport(), JacksonFactory.getDefaultInstance(), credential)
-                .setApplicationName(APPLICATION_NAME)
-                .build();
+        try {
+            Credential credential = authorize();
+
+            final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+
+            return new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+                    .setApplicationName(APPLICATION_NAME)
+                    .build();
+        } catch (Exception exception) {
+            System.out.println(exception);
+            throw new MySystemException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error.");
+        }
     }
 }
