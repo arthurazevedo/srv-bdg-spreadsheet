@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface ServicesRepository extends JpaRepository<Services, Long> {
 
     Optional<List<Services>> findByUserId(Long userId);
+    void deleteAllByUserId(Long userId);
 }
