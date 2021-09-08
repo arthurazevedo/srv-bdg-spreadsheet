@@ -1,6 +1,7 @@
 package com.fourbudget.spreadsheet.service;
 
 import com.fourbudget.spreadsheet.config.GoogleAuthorizeUtil;
+import com.fourbudget.spreadsheet.config.error.MySystemException;
 import com.fourbudget.spreadsheet.model.Product;
 import com.fourbudget.spreadsheet.model.Services;
 import com.fourbudget.spreadsheet.model.Spreadsheet;
@@ -15,7 +16,9 @@ import com.fourbudget.spreadsheet.repository.UserProfileRepository;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -37,12 +40,13 @@ public class SpreadsheetService {
     private final int FIELD_PRICE = 1;
     private final int FIELD_DESCRIPTION = 2;
 
+    @Transactional
     public SpreadsheetFromUser registerSpreadsheetLink(SpreadsheetUserDTO spreadsheetUserDTO) throws IOException, GeneralSecurityException {
         Long idProfileUser = spreadsheetUserDTO.getUserId();
         String link = spreadsheetUserDTO.getSpreadsheetLink();
         Optional<UserProfile> optUserProfile = this.userProfileRepository.findById(idProfileUser);
         if (!optUserProfile.isPresent()) {
-            throw new NoSuchElementException("User doesn't exist");
+            throw new MySystemException(HttpStatus.NO_CONTENT, "User doesn't exist");
         }
 
         UserProfile userProfile = optUserProfile.get();
@@ -59,13 +63,20 @@ public class SpreadsheetService {
             suRelation = optSuRelation.get();
             spreadsheet = suRelation.getSpreadsheet();
             spreadsheet.setSpreadsheetLink(link);
+            deleteExistents(idProfileUser);
             this.spreadsheetRepository.save(spreadsheet);
         }
 
-        this.spreadsheetFromUserRepository.save(suRelation);
         populate(spreadsheet.getSpreadsheetLink(), idProfileUser);
 
+        this.spreadsheetFromUserRepository.save(suRelation);
+
         return suRelation;
+    }
+
+    private void deleteExistents(Long idProfileUser) {
+        this.servicesRepository.deleteAllByUserId(idProfileUser);
+        this.productRepository.deleteAllByUserId(idProfileUser);
     }
 
     public List<SpreadsheetFromUser> findAllSURelations() {
@@ -88,7 +99,7 @@ public class SpreadsheetService {
         List<List<Object>> values = response.getValues();
 
         if (values == null || values.isEmpty()) {
-            throw new IOException("Spreadsheet is empty");
+            throw new MySystemException(HttpStatus.BAD_REQUEST, "Spreadsheet is empty");
         } else {
             for (int i = 1; i < values.size(); i++) {
                 List<Object> column = values.get(i);
