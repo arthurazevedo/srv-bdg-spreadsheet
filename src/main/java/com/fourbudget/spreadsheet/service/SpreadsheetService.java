@@ -7,6 +7,8 @@ import com.fourbudget.spreadsheet.model.Services;
 import com.fourbudget.spreadsheet.model.Spreadsheet;
 import com.fourbudget.spreadsheet.model.SpreadsheetFromUser;
 import com.fourbudget.spreadsheet.model.UserProfile;
+import com.fourbudget.spreadsheet.model.constants.ProductFields;
+import com.fourbudget.spreadsheet.model.constants.ServicesFields;
 import com.fourbudget.spreadsheet.model.dto.SpreadsheetUserDTO;
 import com.fourbudget.spreadsheet.repository.ProductRepository;
 import com.fourbudget.spreadsheet.repository.ServicesRepository;
@@ -36,9 +38,7 @@ public class SpreadsheetService {
     private final ProductRepository productRepository;
     private final ServicesRepository servicesRepository;
 
-    private final int FIELD_NAME = 0;
-    private final int FIELD_PRICE = 1;
-    private final int FIELD_DESCRIPTION = 2;
+    private final String isTrue = "SIM";
 
     @Transactional
     public SpreadsheetFromUser registerSpreadsheetLink(SpreadsheetUserDTO spreadsheetUserDTO) throws IOException, GeneralSecurityException {
@@ -104,10 +104,35 @@ public class SpreadsheetService {
             for (int i = 1; i < values.size(); i++) {
                 List<Object> column = values.get(i);
                 if (tab.equals("products")) {
-                    Product product = new Product(userId, column.get(FIELD_NAME).toString(), Double.parseDouble(column.get(FIELD_PRICE).toString()), column.get(FIELD_DESCRIPTION).toString());
+                    boolean isFavorite = column.get(ProductFields.FIELD_FAVORITE).toString().equalsIgnoreCase(isTrue);
+
+                    Product product = new Product(
+                            userId,
+                            column.get(ProductFields.FIELD_NAME).toString(),
+                            column.get(ProductFields.FIELD_CODE).toString(),
+                            column.get(ProductFields.FIELD_DESCRIPTION).toString(),
+                            column.get(ProductFields.FIELD_IMAGE).toString(),
+                            isFavorite,
+                            Double.parseDouble(column.get(ProductFields.FIELD_PRICE).toString()),
+                            column.get(ProductFields.FIELD_PATH).toString());
+
                     this.productRepository.save(product);
                 } else if (tab.equals("services")) {
-                    Services services = new Services(userId, column.get(FIELD_NAME).toString(), Double.parseDouble(column.get(FIELD_PRICE).toString()), column.get(FIELD_DESCRIPTION).toString());
+                    boolean isFavorite = column.get(ServicesFields.FIELD_FAVORITE).toString().equalsIgnoreCase(isTrue);
+
+                    Services services = new Services(
+                            userId,
+                            column.get(ServicesFields.FIELD_NAME).toString(),
+                            column.get(ServicesFields.FIELD_CODE).toString(),
+                            column.get(ServicesFields.FIELD_DESCRIPTION).toString(),
+                            column.get(ServicesFields.FIELD_IMAGE).toString(),
+                            isFavorite,
+                            Double.parseDouble(column.get(ServicesFields.FIELD_PRICE).toString()),
+                            column.get(ServicesFields.FIELD_PATH).toString(),
+                            column.get(ServicesFields.FIELD_PHONE).toString(),
+                            column.get(ServicesFields.FIELD_TYPE).toString(),
+                            column.get(ServicesFields.FIELD_ADDRESS).toString());
+
                     this.servicesRepository.save(services);
                 }
             }
