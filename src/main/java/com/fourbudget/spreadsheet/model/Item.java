@@ -20,6 +20,8 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "sale_id")
     private Sale sale;
 
     private int quantity;

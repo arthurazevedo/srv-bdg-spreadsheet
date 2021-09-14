@@ -59,6 +59,7 @@ public class ProjectService {
                 throw new MySystemException(HttpStatus.OK, ERROR_MESSAGE_INVALID_QUANTITY);
             }
             this.itemRepository.save(item);
+            itemsList.add(item);
         }
 
         return itemsList;

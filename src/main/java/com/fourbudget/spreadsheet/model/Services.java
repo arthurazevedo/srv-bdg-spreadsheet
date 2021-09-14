@@ -19,6 +19,7 @@ import java.util.Date;
 
 @Entity
 @Data
+@NoArgsConstructor
 @Table(name = "services")
 @ToString
 @EntityListeners(AuditingEntityListener.class)
