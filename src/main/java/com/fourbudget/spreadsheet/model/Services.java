@@ -19,48 +19,14 @@ import java.util.Date;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "services")
 @ToString
 @EntityListeners(AuditingEntityListener.class)
-public class Services {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @Column(nullable = false)
-    private Long userId;
-
-    @Column(length = 50, nullable = false)
-    private String name;
-
-    private String code;
-
-    @Column(length = 200)
-    private String description;
-
-    private String imageUrl;
-
-    private boolean isFavorite;
-
-    @Column(nullable = false)
-    private Double price;
-
-    private String path;
+public class Services extends Sale {
 
     private String phone;
-
     private String type;
-
     private String address;
-
-    @CreatedDate
-    private Date createdAt;
-
-    @CreatedBy
-    private Long createdBy;
 
     public Services(Long userId, String name, String code, String description, String imageUrl, boolean isFavorite, Double price, String path, String phone, String type, String address) {
         this.userId = userId;

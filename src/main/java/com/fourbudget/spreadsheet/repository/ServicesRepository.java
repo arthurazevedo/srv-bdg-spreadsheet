@@ -10,4 +10,5 @@ public interface ServicesRepository extends JpaRepository<Services, Long> {
 
     Optional<List<Services>> findByUserId(Long userId);
     void deleteAllByUserId(Long userId);
+    Optional<Services> findById(Long serviceId);
 }
