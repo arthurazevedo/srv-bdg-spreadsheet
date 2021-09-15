@@ -14,11 +14,11 @@ public class UserProfileService {
 
     private final UserProfileRepository userProfileRepository;
 
-    private final String ERROR_MESSAGE_ALREADY_USER = "User already exists.";
+    private final String ERROR_MESSAGE_USER_ALREADY_EXISTS = "User already exists.";
 
     public UserProfile createUser(UserProfileDTO userProfileDto) {
         if (this.userProfileRepository.existsById(userProfileDto.getId())){
-            throw new MySystemException(HttpStatus.OK, ERROR_MESSAGE_ALREADY_USER);
+            throw new MySystemException(HttpStatus.OK, ERROR_MESSAGE_USER_ALREADY_EXISTS);
         }
         UserProfile userProfile = new UserProfile(userProfileDto);
         this.userProfileRepository.save(userProfile);
