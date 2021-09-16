@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -65,6 +66,18 @@ public class ProjectService {
         return itemsList;
     }
 
+    public Project getProject(Long userId){
+        Optional<Project> projectOptional = this.projectRepository.findByUserId(userId);
+
+        if(!projectOptional.isPresent()){
+            throw new MySystemException(HttpStatus.OK, ERROR_MESSAGE_PRODUCT_NOT_FOUND);
+        }
+
+        Project project = projectOptional.orElseThrow(() -> new MySystemException(HttpStatus.NO_CONTENT, ERROR_MESSAGE_PRODUCT_NOT_FOUND));
+
+        return project;
+    }
+
     private Product validateAndReturnProduct(Optional<Product> optProduct) {
         if (!optProduct.isPresent()) {
             throw new MySystemException(HttpStatus.OK, ERROR_MESSAGE_PRODUCT_NOT_FOUND);
@@ -80,4 +93,5 @@ public class ProjectService {
         Services service = optService.get();
         return service;
     }
+
 }

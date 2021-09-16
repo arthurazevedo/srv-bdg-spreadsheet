@@ -1,5 +1,6 @@
 package com.fourbudget.spreadsheet.controller;
 
+import com.fourbudget.spreadsheet.model.Item;
 import com.fourbudget.spreadsheet.model.Project;
 import com.fourbudget.spreadsheet.model.dto.ProjectDTO;
 import com.fourbudget.spreadsheet.service.ProjectService;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -23,5 +25,12 @@ public class ProjectController {
                                                @RequestBody @Valid ProjectDTO projectDTO) {
         Project project = this.projectService.createProject(userId, projectDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(project);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<Project> getProject(@PathVariable("userId") Long userId){
+
+       Project project = this.projectService.getProject(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(project);
     }
 }
