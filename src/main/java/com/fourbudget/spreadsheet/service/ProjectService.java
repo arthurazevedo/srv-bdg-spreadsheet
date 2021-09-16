@@ -33,15 +33,15 @@ public class ProjectService {
     private final String ERROR_MESSAGE_INVALID_QUANTITY = "Item quantity is invalid";
 
     public Project createProject(Long userId, ProjectDTO projectDTO) {
-        ArrayList<ItemDTO> itemsDTOList = (ArrayList<ItemDTO>) projectDTO.getListItemDTO();
-        ArrayList<Item> itemsList = this.fillItemsList(itemsDTOList);
+        List<ItemDTO> itemsDTOList = (List<ItemDTO>) projectDTO.getListItemDTO();
+        List<Item> itemsList = this.fillItemsList(itemsDTOList);
         Project project = new Project(userId, itemsList);
         this.projectRepository.save(project);
         return project;
     }
 
-    private ArrayList<Item> fillItemsList(ArrayList<ItemDTO> itemsDTOList) {
-        ArrayList<Item> itemsList = new ArrayList<>();
+    private List<Item> fillItemsList(List<ItemDTO> itemsDTOList) {
+        List<Item> itemsList = new ArrayList<>();
 
         for (ItemDTO itemDTO : itemsDTOList) {
             Long saleId = itemDTO.getSaleId();
@@ -64,6 +64,18 @@ public class ProjectService {
         }
 
         return itemsList;
+    }
+
+    public Project updateProject(Long id, ProjectDTO projectDTO) {
+        Project project = projectRepository.findById(id).orElseThrow(() -> new MySystemException(HttpStatus.NOT_FOUND, "Project dont exists"));
+
+        List<Item> itens = fillItemsList(projectDTO.getListItemDTO());
+
+        project.setItemsList(itens);
+
+        projectRepository.save(project);
+
+        return project;
     }
 
     public Project getProject(Long userId){
