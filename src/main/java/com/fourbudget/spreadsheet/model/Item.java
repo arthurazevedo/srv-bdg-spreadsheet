@@ -1,19 +1,18 @@
 package com.fourbudget.spreadsheet.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.fourbudget.spreadsheet.model.dto.ItemDTO;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
 @Entity
-@Data
 @NoArgsConstructor
 @Table(name = "items")
 @ToString
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
 public class Item {
 
     @Id

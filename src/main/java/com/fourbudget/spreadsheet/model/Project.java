@@ -27,7 +27,7 @@ public class Project {
     @OneToMany(targetEntity=Item.class, fetch=FetchType.EAGER)
     private List<Item> itemsList;
 
-    public Project(Long userId, ArrayList<Item> itemsList) {
+    public Project(Long userId, List<Item> itemsList) {
         this.userId = userId;
         this.itemsList = itemsList;
     }
