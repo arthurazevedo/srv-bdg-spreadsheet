@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface GoogleGateway {
 
     @NoAuth
-    @GetMapping("/userinfo?access_token=${token}")
+    @GetMapping("/userinfo?access_token={token}")
     UserInfo autenticar(@PathVariable("token") String token);
 }
