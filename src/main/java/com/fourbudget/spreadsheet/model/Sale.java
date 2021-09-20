@@ -1,6 +1,8 @@
 package com.fourbudget.spreadsheet.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -10,6 +12,8 @@ import java.util.Date;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Data
+@ToString
 public abstract class Sale implements Serializable {
 
     @Id
