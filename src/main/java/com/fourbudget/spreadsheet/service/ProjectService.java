@@ -31,7 +31,7 @@ public class ProjectService {
     public Project createProject(Long userId, ProjectDTO projectDTO) {
         List<ItemDTO> itemsDTOList = projectDTO.getListItemDTO();
         List<Item> itemsList = this.fillItemsList(itemsDTOList);
-        Project project = new Project(userId, itemsList);
+        Project project = new Project(userId, itemsList, projectDTO.getEmail(), projectDTO.getName(), projectDTO.getPrice(), projectDTO.getDiscount());
         this.projectRepository.save(project);
         return project;
     }
