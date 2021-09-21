@@ -28,10 +28,10 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.CREATED).body(project);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<Project> getProject(@PathVariable("userId") Long userId){
+    @GetMapping("/{projectId}")
+    public ResponseEntity<Project> getProject(@PathVariable("projectId") Long projectId){
 
-       Project project = this.projectService.getProject(userId);
+       Project project = this.projectService.getProject(projectId);
         return ResponseEntity.status(HttpStatus.OK).body(project);
     }
 
