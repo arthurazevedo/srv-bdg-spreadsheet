@@ -66,8 +66,8 @@ public class ProjectService {
         return project;
     }
 
-    public Project getProject(Long userId){
-        Optional<Project> projectOptional = this.projectRepository.findByUserId(userId);
+    public Project getProject(Long projectId){
+        Optional<Project> projectOptional = this.projectRepository.findById(projectId);
 
         if(!projectOptional.isPresent()){
             throw new MySystemException(HttpStatus.OK, ERROR_MESSAGE_PRODUCT_NOT_FOUND);
