@@ -1,6 +1,7 @@
 package com.fourbudget.spreadsheet.config.error;
 
 import com.fourbudget.spreadsheet.config.validation.FormError;
+import com.fourbudget.spreadsheet.util.messages.ErrorMessageDataBase;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,6 @@ import java.util.NoSuchElementException;
 @ControllerAdvice
 public class ErrorHandler {
 
-    private final String ERROR_DATABASE = "Database error.";
-
     @ExceptionHandler({MySystemException.class, MethodArgumentNotValidException.class})
     protected ResponseEntity<?> handleException(Exception exception) {
         if (exception instanceof MethodArgumentNotValidException) {
@@ -29,7 +28,7 @@ public class ErrorHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     protected ResponseEntity<ErrorResponse> handleDataException() {
-        ErrorResponse error = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ERROR_DATABASE);
+        ErrorResponse error = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, ErrorMessageDataBase.ERROR_DATABASE);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 

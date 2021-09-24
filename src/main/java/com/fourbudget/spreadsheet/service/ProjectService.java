@@ -9,6 +9,8 @@ import com.fourbudget.spreadsheet.model.dto.ProjectDTO;
 import com.fourbudget.spreadsheet.repository.ItemRepository;
 import com.fourbudget.spreadsheet.repository.ProjectRepository;
 import com.fourbudget.spreadsheet.repository.SaleRepository;
+import com.fourbudget.spreadsheet.util.messages.ErrorMessageProduct;
+import com.fourbudget.spreadsheet.util.messages.ErrorMessageProductOrService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,8 +27,6 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final SaleRepository saleRepository;
 
-    private final String ERROR_MESSAGE_PRODUCT_NOT_FOUND = "Product not found";
-    private final String ERROR_MESSAGE_PRODUCT_SERVICE_NOT_EXISTS= "Service or Product doesnt exists.";
 
     public Project createProject(Long userId, ProjectDTO projectDTO) {
         List<ItemDTO> itemsDTOList = projectDTO.getListItemDTO();
@@ -44,7 +44,7 @@ public class ProjectService {
             int quantity = itemDTO.getQuantity();
             Item item = new Item();
 
-            Sale sale = this.saleRepository.findById(saleId).orElseThrow(() -> new MySystemException(HttpStatus.NOT_FOUND, ERROR_MESSAGE_PRODUCT_SERVICE_NOT_EXISTS));
+            Sale sale = this.saleRepository.findById(saleId).orElseThrow(() -> new MySystemException(HttpStatus.NOT_FOUND, ErrorMessageProductOrService.ERROR_MESSAGE_PRODUCT_SERVICE_NOT_EXISTS));
             item.setItem(sale, quantity);
 
             this.itemRepository.save(item);
@@ -70,9 +70,9 @@ public class ProjectService {
         Optional<Project> projectOptional = this.projectRepository.findById(projectId);
 
         if(!projectOptional.isPresent()){
-            throw new MySystemException(HttpStatus.OK, ERROR_MESSAGE_PRODUCT_NOT_FOUND);
+            throw new MySystemException(HttpStatus.OK, ErrorMessageProduct.ERROR_PRODUCTS_NOT_FOUND);
         }
 
-        return projectOptional.orElseThrow(() -> new MySystemException(HttpStatus.NO_CONTENT, ERROR_MESSAGE_PRODUCT_NOT_FOUND));
+        return projectOptional.orElseThrow(() -> new MySystemException(HttpStatus.NO_CONTENT, ErrorMessageProduct.ERROR_PRODUCTS_NOT_FOUND));
     }
 }
