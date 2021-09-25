@@ -44,7 +44,9 @@ public class ProjectService {
             int quantity = itemDTO.getQuantity();
             Item item = new Item();
 
-            Sale sale = this.saleRepository.findById(saleId).orElseThrow(() -> new MySystemException(HttpStatus.NOT_FOUND, ErrorMessageProductOrService.ERROR_MESSAGE_PRODUCT_SERVICE_NOT_EXISTS));
+            Sale sale = this.saleRepository.findById(saleId)
+                    .orElseThrow(() -> new MySystemException(HttpStatus.NOT_FOUND, ErrorMessageProductOrService.ERROR_MESSAGE_PRODUCT_SERVICE_NOT_EXISTS));
+
             item.setItem(sale, quantity);
 
             this.itemRepository.save(item);
@@ -54,8 +56,9 @@ public class ProjectService {
         return itemsList;
     }
 
-    public Project updateProject(Long id, ProjectDTO projectDTO) {
-        Project project = projectRepository.findById(id).orElseThrow(() -> new MySystemException(HttpStatus.NOT_FOUND, "Project dont exists"));
+    public Project updateProject(Long projectId, ProjectDTO projectDTO) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new MySystemException(HttpStatus.NOT_FOUND, "Project dont exists"));
 
         List<Item> itens = fillItemsList(projectDTO.getListItemDTO());
 
@@ -66,13 +69,24 @@ public class ProjectService {
         return project;
     }
 
-    public Project getProject(Long projectId){
+    public Project getProject(Long projectId) {
         Optional<Project> projectOptional = this.projectRepository.findById(projectId);
 
-        if(!projectOptional.isPresent()){
+        if (!projectOptional.isPresent()) {
             throw new MySystemException(HttpStatus.OK, ErrorMessageProduct.ERROR_PRODUCTS_NOT_FOUND);
         }
 
         return projectOptional.orElseThrow(() -> new MySystemException(HttpStatus.NO_CONTENT, ErrorMessageProduct.ERROR_PRODUCTS_NOT_FOUND));
+    }
+
+    public Project finishPorject(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new MySystemException(HttpStatus.NOT_FOUND, "Project dont exists"));
+
+        project.setFinished(true);
+
+        projectRepository.save(project);
+
+        return project;
     }
 }
