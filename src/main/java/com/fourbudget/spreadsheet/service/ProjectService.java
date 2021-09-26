@@ -81,10 +81,9 @@ public class ProjectService {
 
     public Project finishPorject(Long projectId) {
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new MySystemException(HttpStatus.NOT_FOUND, "Project dont exists"));
+                .orElseThrow(() -> new MySystemException(HttpStatus.NOT_FOUND, "Project don't exist"));
 
         project.setFinished(true);
-
         projectRepository.save(project);
 
         return project;
