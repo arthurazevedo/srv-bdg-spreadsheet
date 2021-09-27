@@ -1,7 +1,9 @@
 package com.fourbudget.spreadsheet.model;
 
-import com.fourbudget.spreadsheet.model.dto.ItemDTO;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -29,8 +31,9 @@ public class Item {
         this.sale = sale;
         this.quantity = quantity;
     }
-    public void setItem(Sale sale) {
-        this.sale = sale;
-        this.quantity = 0;
+
+    public Double getItemPrice() {
+        Double totalPrice = this.sale.getPrice() * this.quantity;
+        return totalPrice;
     }
 }
