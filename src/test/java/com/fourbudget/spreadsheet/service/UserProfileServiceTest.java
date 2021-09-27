@@ -1,5 +1,6 @@
 package com.fourbudget.spreadsheet.service;
 
+import com.fourbudget.spreadsheet.config.error.MySystemException;
 import com.fourbudget.spreadsheet.model.UserProfile;
 import com.fourbudget.spreadsheet.model.dto.UserProfileDTO;
 import com.fourbudget.spreadsheet.repository.UserProfileRepository;
@@ -43,7 +44,7 @@ public class UserProfileServiceTest {
         UserProfileDTO upDtoTest = new UserProfileDTO(userTest);
         given(this.upRepository.existsById(userTest.getId())).willReturn(true);
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        Assertions.assertThrows(MySystemException.class, () -> {
             this.upService.createUser(upDtoTest);
         });
     }
