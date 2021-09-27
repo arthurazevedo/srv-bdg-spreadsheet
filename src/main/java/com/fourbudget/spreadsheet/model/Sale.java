@@ -52,12 +52,10 @@ public abstract class Sale implements Serializable {
     @JsonProperty("path")
     protected String path;
 
-    @CreatedDate
     @Column(length = 1000)
     @JsonProperty("created_at")
     protected Date createdAt;
 
-    @CreatedBy
     @JsonProperty("created_by")
     protected Long createdBy;
 }
