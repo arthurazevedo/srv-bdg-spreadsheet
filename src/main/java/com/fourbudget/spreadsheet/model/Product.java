@@ -12,6 +12,7 @@ import javax.persistence.Table;
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "products")
 @ToString
 @EntityListeners(AuditingEntityListener.class)
 public class Product extends Sale {
