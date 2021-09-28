@@ -21,7 +21,6 @@ public class Item {
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "sale_id")
     private Sale sale;
 
     private int quantity;
