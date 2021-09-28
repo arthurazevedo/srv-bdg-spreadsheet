@@ -11,6 +11,7 @@ import com.fourbudget.spreadsheet.model.constants.ProductFields;
 import com.fourbudget.spreadsheet.model.constants.ServicesFields;
 import com.fourbudget.spreadsheet.model.dto.SpreadsheetUserDTO;
 import com.fourbudget.spreadsheet.repository.ProductRepository;
+import com.fourbudget.spreadsheet.repository.SaleRepository;
 import com.fourbudget.spreadsheet.repository.ServicesRepository;
 import com.fourbudget.spreadsheet.repository.SpreadsheetFromUserRepository;
 import com.fourbudget.spreadsheet.repository.SpreadsheetRepository;
@@ -37,6 +38,7 @@ public class SpreadsheetService {
     private final SpreadsheetRepository spreadsheetRepository;
     private final ProductRepository productRepository;
     private final ServicesRepository servicesRepository;
+    private final SaleRepository saleRepository;
 
     private final String isTrue = "SIM";
 
@@ -75,8 +77,7 @@ public class SpreadsheetService {
     }
 
     private void deleteExistents(Long idProfileUser) {
-        this.servicesRepository.deleteAllByUserId(idProfileUser);
-        this.productRepository.deleteAllByUserId(idProfileUser);
+        this.saleRepository.deleteAllByUserId(idProfileUser);
     }
 
     public List<SpreadsheetFromUser> findAllSURelations() {
@@ -116,7 +117,7 @@ public class SpreadsheetService {
                             Double.parseDouble(column.get(ProductFields.FIELD_PRICE).toString()),
                             column.get(ProductFields.FIELD_PATH).toString());
 
-                    this.productRepository.save(product);
+                    this.saleRepository.save(product);
                 } else if (tab.equals("services")) {
                     boolean isFavorite = column.get(ServicesFields.FIELD_FAVORITE).toString().equalsIgnoreCase(isTrue);
 
@@ -133,7 +134,7 @@ public class SpreadsheetService {
                             column.get(ServicesFields.FIELD_TYPE).toString(),
                             column.get(ServicesFields.FIELD_ADDRESS).toString());
 
-                    this.servicesRepository.save(services);
+                    this.saleRepository.save(services);
                 }
             }
         }
