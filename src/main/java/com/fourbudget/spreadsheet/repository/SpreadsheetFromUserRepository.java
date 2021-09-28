@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface SpreadsheetFromUserRepository extends JpaRepository<SpreadsheetFromUser, Long> {
 
-    Optional<SpreadsheetFromUser> findByUserProfileId(Long id);
+    Optional<SpreadsheetFromUser> findOneByUserProfileId(Long id);
 
 
 }
