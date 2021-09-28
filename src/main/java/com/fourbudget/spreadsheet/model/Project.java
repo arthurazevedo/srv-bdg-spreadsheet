@@ -20,7 +20,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "projects")
 @ToString
 @EntityListeners(AuditingEntityListener.class)
 public class Project {

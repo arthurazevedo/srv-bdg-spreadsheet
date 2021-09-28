@@ -14,7 +14,6 @@ import javax.persistence.Table;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users_profiles")
 public class UserProfile {
 
     @Id

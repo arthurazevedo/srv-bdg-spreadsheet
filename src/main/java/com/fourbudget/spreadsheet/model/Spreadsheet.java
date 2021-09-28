@@ -16,7 +16,6 @@ import javax.persistence.Table;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "spreadsheets")
 public class Spreadsheet {
 
     @Id
