@@ -14,7 +14,6 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Table(name = "products")
 @ToString
-@EntityListeners(AuditingEntityListener.class)
 public class Product extends Sale {
 
     public Product(Long userId, String name, String code, String description, String imageUrl, boolean isFavorite, Double price, String path) {

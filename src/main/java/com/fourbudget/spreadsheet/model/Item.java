@@ -12,7 +12,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Table(name = "items")
 @ToString
-@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 public class Item {
