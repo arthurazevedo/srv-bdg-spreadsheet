@@ -1,6 +1,6 @@
 package com.fourbudget.spreadsheet.service;
 
-import com.fourbudget.spreadsheet.config.error.MySystemException;
+import com.fourbudget.spreadsheet.config.error.SpreadsheetApplicationException;
 import com.fourbudget.spreadsheet.model.Item;
 import com.fourbudget.spreadsheet.model.Project;
 import com.fourbudget.spreadsheet.model.Sale;
@@ -11,6 +11,7 @@ import com.fourbudget.spreadsheet.repository.ProjectRepository;
 import com.fourbudget.spreadsheet.repository.SaleRepository;
 import com.fourbudget.spreadsheet.util.messages.ErrorMessageProduct;
 import com.fourbudget.spreadsheet.util.messages.ErrorMessageProductOrService;
+import com.fourbudget.spreadsheet.util.messages.ErrorMessageProject;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class ProjectService {
     public Project createProject(Long userId, ProjectDTO projectDTO) {
         List<ItemDTO> itemsDTOList = projectDTO.getListItemDTO();
         List<Item> itemsList = this.fillItemsList(itemsDTOList);
+
         Project project = new Project(userId, itemsList, projectDTO.getEmail(), projectDTO.getName(), projectDTO.getPrice(), projectDTO.getDiscount());
         this.projectRepository.save(project);
         return project;
@@ -45,10 +47,9 @@ public class ProjectService {
             Item item = new Item();
 
             Sale sale = this.saleRepository.findById(saleId)
-                    .orElseThrow(() -> new MySystemException(HttpStatus.NOT_FOUND, ErrorMessageProductOrService.ERROR_MESSAGE_PRODUCT_SERVICE_NOT_EXISTS));
+                    .orElseThrow(() -> new SpreadsheetApplicationException(HttpStatus.NOT_FOUND, ErrorMessageProductOrService.ERROR_MESSAGE_PRODUCT_SERVICE_NOT_EXISTS));
 
             item.setItem(sale, quantity);
-
             this.itemRepository.save(item);
             itemsList.add(item);
         }
@@ -58,12 +59,10 @@ public class ProjectService {
 
     public Project updateProject(Long projectId, ProjectDTO projectDTO) {
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new MySystemException(HttpStatus.NOT_FOUND, "Project dont exists"));
+                .orElseThrow(() -> new SpreadsheetApplicationException(HttpStatus.NOT_FOUND, ErrorMessageProject.ERROR_MESSAGE_PROJECT_DOESNT_EXIST));
 
         List<Item> itens = fillItemsList(projectDTO.getListItemDTO());
-
         project.setItemsList(itens);
-
         projectRepository.save(project);
 
         return project;
@@ -73,15 +72,15 @@ public class ProjectService {
         Optional<Project> projectOptional = this.projectRepository.findById(projectId);
 
         if (!projectOptional.isPresent()) {
-            throw new MySystemException(HttpStatus.OK, ErrorMessageProduct.ERROR_PRODUCTS_NOT_FOUND);
+            throw new SpreadsheetApplicationException(HttpStatus.OK, ErrorMessageProduct.ERROR_PRODUCTS_NOT_FOUND);
         }
 
-        return projectOptional.orElseThrow(() -> new MySystemException(HttpStatus.NO_CONTENT, ErrorMessageProduct.ERROR_PRODUCTS_NOT_FOUND));
+        return projectOptional.orElseThrow(() -> new SpreadsheetApplicationException(HttpStatus.NO_CONTENT, ErrorMessageProduct.ERROR_PRODUCTS_NOT_FOUND));
     }
 
-    public Project finishPorject(Long projectId) {
+    public Project finishProject(Long projectId) {
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new MySystemException(HttpStatus.NOT_FOUND, "Project don't exist"));
+                .orElseThrow(() -> new SpreadsheetApplicationException(HttpStatus.NOT_FOUND, ErrorMessageProject.ERROR_MESSAGE_PROJECT_DOESNT_EXIST));
 
         project.setFinished(true);
         projectRepository.save(project);

@@ -1,6 +1,6 @@
 package com.fourbudget.spreadsheet.service;
 
-import com.fourbudget.spreadsheet.config.error.MySystemException;
+import com.fourbudget.spreadsheet.config.error.SpreadsheetApplicationException;
 import com.fourbudget.spreadsheet.model.UserProfile;
 import com.fourbudget.spreadsheet.model.dto.UserProfileDTO;
 import com.fourbudget.spreadsheet.repository.UserProfileRepository;
@@ -15,10 +15,9 @@ public class UserProfileService {
 
     private final UserProfileRepository userProfileRepository;
 
-
     public UserProfile createUser(UserProfileDTO userProfileDto) {
-        if (this.userProfileRepository.existsById(userProfileDto.getId())){
-            throw new MySystemException(HttpStatus.OK, ErrorMessageUserProfile.ERROR_MESSAGE_USER_ALREADY_EXISTS);
+        if (this.userProfileRepository.existsById(userProfileDto.getId())) {
+            throw new SpreadsheetApplicationException(HttpStatus.OK, ErrorMessageUserProfile.ERROR_MESSAGE_USER_ALREADY_EXISTS);
         }
         UserProfile userProfile = new UserProfile(userProfileDto);
         this.userProfileRepository.save(userProfile);

@@ -1,6 +1,6 @@
 package com.fourbudget.spreadsheet.service;
 
-import com.fourbudget.spreadsheet.config.error.MySystemException;
+import com.fourbudget.spreadsheet.config.error.SpreadsheetApplicationException;
 import com.fourbudget.spreadsheet.model.Services;
 import com.fourbudget.spreadsheet.repository.ServicesRepository;
 import com.fourbudget.spreadsheet.util.messages.ErrorMessageService;
@@ -21,10 +21,10 @@ public class ServicesService {
     public List<Services> getServicosList(Long userId) {
         Optional<List<Services>> servicesOptional = this.servicesRepository.findByUserId(userId);
 
-        List<Services> services = servicesOptional.orElseThrow(() -> new MySystemException(HttpStatus.NO_CONTENT, ErrorMessageService.ERROR_SERVICES_NOT_FOUND));
+        List<Services> services = servicesOptional.orElseThrow(() -> new SpreadsheetApplicationException(HttpStatus.NO_CONTENT, ErrorMessageService.ERROR_SERVICES_NOT_FOUND));
 
         if (services.isEmpty()) {
-           throw new MySystemException(HttpStatus.NO_CONTENT, ErrorMessageService.ERROR_SERVICES_NOT_FOUND);
+            throw new SpreadsheetApplicationException(HttpStatus.NO_CONTENT, ErrorMessageService.ERROR_SERVICES_NOT_FOUND);
         }
 
         return services;

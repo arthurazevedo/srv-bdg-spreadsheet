@@ -1,7 +1,7 @@
 package com.fourbudget.spreadsheet.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fourbudget.spreadsheet.config.error.MySystemException;
+import com.fourbudget.spreadsheet.config.error.SpreadsheetApplicationException;
 import com.fourbudget.spreadsheet.util.messages.ErrorMessageProject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -62,7 +62,7 @@ public class Project {
         }
 
         if (!actualPrice.equals(expectedPrice)) {
-            throw new MySystemException(HttpStatus.OK, ErrorMessageProject.ERROR_MESSAGE_NOT_MATCHING_PRICE);
+            throw new SpreadsheetApplicationException(HttpStatus.OK, ErrorMessageProject.ERROR_MESSAGE_NOT_MATCHING_PRICE);
         }
     }
 

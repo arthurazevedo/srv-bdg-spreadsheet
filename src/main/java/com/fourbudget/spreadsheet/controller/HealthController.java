@@ -12,8 +12,7 @@ import java.util.Date;
 public class HealthController {
 
     @GetMapping
-    public ResponseEntity health(){
+    public ResponseEntity health() {
         return ResponseEntity.ok().body(new Date().toString());
     }
-
 }

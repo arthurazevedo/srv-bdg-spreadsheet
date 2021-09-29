@@ -39,7 +39,7 @@ public class ProjectController {
 
     @PatchMapping("/{projectId}")
     public ResponseEntity<Project> finishProject(@PathVariable("projectId") Long projectId) {
-        Project project = projectService.finishPorject(projectId);
+        Project project = projectService.finishProject(projectId);
         return ResponseEntity.status(HttpStatus.OK).body(project);
     }
 

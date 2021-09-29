@@ -1,6 +1,6 @@
 package com.fourbudget.spreadsheet.service;
 
-import com.fourbudget.spreadsheet.config.error.MySystemException;
+import com.fourbudget.spreadsheet.config.error.SpreadsheetApplicationException;
 import com.fourbudget.spreadsheet.model.UserProfile;
 import com.fourbudget.spreadsheet.model.dto.SpreadsheetUserDTO;
 import com.fourbudget.spreadsheet.repository.SpreadsheetFromUserRepository;
@@ -16,10 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -61,7 +59,7 @@ public class SpreadsheetServiceTest {
     public void userNotFoundException() {
         SpreadsheetUserDTO suDto = new SpreadsheetUserDTO("test", new Long(1));
 
-        Assertions.assertThrows(MySystemException.class, () -> {
+        Assertions.assertThrows(SpreadsheetApplicationException.class, () -> {
             this.spreadsheetService.registerSpreadsheetLink(suDto);
         });
     }

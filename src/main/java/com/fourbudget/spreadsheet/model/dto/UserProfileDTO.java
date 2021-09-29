@@ -24,7 +24,7 @@ public class UserProfileDTO {
     @Email
     private String email;
 
-    public UserProfileDTO(UserProfile userProfile){
+    public UserProfileDTO(UserProfile userProfile) {
         this.name = userProfile.getName();
         this.email = userProfile.getEmail();
         this.id = userProfile.getId();

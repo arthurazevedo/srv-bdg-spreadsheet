@@ -1,6 +1,6 @@
 package com.fourbudget.spreadsheet.service;
 
-import com.fourbudget.spreadsheet.config.error.MySystemException;
+import com.fourbudget.spreadsheet.config.error.SpreadsheetApplicationException;
 import com.fourbudget.spreadsheet.model.UserProfile;
 import com.fourbudget.spreadsheet.model.dto.UserProfileDTO;
 import com.fourbudget.spreadsheet.repository.UserProfileRepository;
@@ -44,7 +44,7 @@ public class UserProfileServiceTest {
         UserProfileDTO upDtoTest = new UserProfileDTO(userTest);
         given(this.upRepository.existsById(userTest.getId())).willReturn(true);
 
-        Assertions.assertThrows(MySystemException.class, () -> {
+        Assertions.assertThrows(SpreadsheetApplicationException.class, () -> {
             this.upService.createUser(upDtoTest);
         });
     }

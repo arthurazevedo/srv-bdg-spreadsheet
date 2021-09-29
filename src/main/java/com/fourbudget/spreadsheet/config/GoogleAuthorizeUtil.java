@@ -1,6 +1,6 @@
 package com.fourbudget.spreadsheet.config;
 
-import com.fourbudget.spreadsheet.config.error.MySystemException;
+import com.fourbudget.spreadsheet.config.error.SpreadsheetApplicationException;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -32,7 +32,7 @@ public class GoogleAuthorizeUtil {
     private static Credential authorize() throws IOException, GeneralSecurityException, URISyntaxException {
         URL fileURL = GoogleAuthorizeUtil.class.getClassLoader().getResource(KEY_FILE_LOCATION);
 
-        if(fileURL==null) {
+        if (fileURL == null) {
             fileURL = (new File("tokens/" + KEY_FILE_LOCATION)).toURI().toURL();
         }
 
@@ -57,7 +57,7 @@ public class GoogleAuthorizeUtil {
                     .build();
         } catch (Exception exception) {
             System.out.println(exception);
-            throw new MySystemException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error.");
+            throw new SpreadsheetApplicationException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error.");
         }
     }
 }

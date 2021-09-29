@@ -17,13 +17,13 @@ import java.util.NoSuchElementException;
 @ControllerAdvice
 public class ErrorHandler {
 
-    @ExceptionHandler({MySystemException.class, MethodArgumentNotValidException.class})
+    @ExceptionHandler({SpreadsheetApplicationException.class, MethodArgumentNotValidException.class})
     protected ResponseEntity<?> handleException(Exception exception) {
         if (exception instanceof MethodArgumentNotValidException) {
             return handleNotValid((MethodArgumentNotValidException) exception);
         }
 
-        return handleErrors((MySystemException) exception);
+        return handleErrors((SpreadsheetApplicationException) exception);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -38,7 +38,7 @@ public class ErrorHandler {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(error);
     }
 
-    private ResponseEntity<ErrorResponse> handleErrors(MySystemException exception) {
+    private ResponseEntity<ErrorResponse> handleErrors(SpreadsheetApplicationException exception) {
         ErrorResponse error = new ErrorResponse(exception.getStatus(), exception.getMessage());
         return ResponseEntity.status(exception.getStatus()).body(error);
     }
