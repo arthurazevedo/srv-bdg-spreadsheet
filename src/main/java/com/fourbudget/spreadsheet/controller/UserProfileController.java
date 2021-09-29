@@ -22,8 +22,7 @@ public class UserProfileController {
 
     @PostMapping
     public ResponseEntity<UserProfile> createUserProfile(@RequestBody @Valid UserProfileDTO userProfileDto) {
-        UserProfile userProfile = null;
-        userProfile = this.userProfileService.createUser(userProfileDto);
+        UserProfile userProfile = this.userProfileService.createUser(userProfileDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(userProfile);
     }
 }

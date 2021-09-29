@@ -28,11 +28,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class SpreadsheetControllerTest {
 
-    @MockBean
-    private SpreadsheetService spreadsheetService;
-
     @Autowired
     private SpreadsheetController spreadsheetController;
+
+    @MockBean
+    private SpreadsheetService spreadsheetService;
 
     private UserProfile userProfileTest;
     private Spreadsheet spreadsheetTest;

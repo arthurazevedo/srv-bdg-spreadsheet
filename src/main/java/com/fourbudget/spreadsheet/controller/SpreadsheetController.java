@@ -24,7 +24,6 @@ public class SpreadsheetController {
     @PostMapping
     public ResponseEntity<SpreadsheetFromUser> postSpreadsheetLink(@RequestBody @Valid SpreadsheetUserDTO spreadsheetUserDto) throws GeneralSecurityException, IOException {
         SpreadsheetFromUser suRelation = this.spreadsheetService.registerSpreadsheetLink(spreadsheetUserDto);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(suRelation);
     }
 
