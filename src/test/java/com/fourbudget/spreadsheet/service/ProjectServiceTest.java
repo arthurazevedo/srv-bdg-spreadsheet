@@ -130,5 +130,21 @@ public class ProjectServiceTest {
         }
     }
 
+    @Test
+    public void successfullyFinishingProject() {
+        List<ItemDTO> defaultListItems = ReturnDefaultObjectsUtil.returnListItemDTO1();
+        ProjectDTO projectDTO = ReturnDefaultObjectsUtil.returnProjectDTO1(defaultListItems, new Double(1110));
+
+        when(this.saleRepository.findById(product.getId())).thenReturn(Optional.of(product));
+        when(this.saleRepository.findById(service.getId())).thenReturn(Optional.of(service));
+
+        Project project1 = this.projectService.createProject(new Long(1), projectDTO);
+        when(this.projectRepository.findById(any(Long.class))).thenReturn(Optional.of(project1));
+        boolean oldIsFinished = project1.isFinished();
+
+        this.projectService.finishProject(new Long(10));
+
+        Assertions.assertNotEquals(project1.isFinished(), oldIsFinished);
+    }
 
 }

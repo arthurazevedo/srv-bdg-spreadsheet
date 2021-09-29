@@ -81,7 +81,7 @@ public class ProjectService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new SpreadsheetApplicationException(HttpStatus.NOT_FOUND, ErrorMessageProject.ERROR_MESSAGE_PROJECT_DOESNT_EXIST));
 
-        project.setFinished(true);
+        project.finishProject();
         projectRepository.save(project);
 
         return project;

@@ -54,6 +54,7 @@ public class Project {
         this.email = email;
         this.name = name;
         this.discount = discount;
+        this.isFinished = false;
     }
 
     public void validatePrice(List<Item> itemsList, Double expectedPrice) {
@@ -78,5 +79,9 @@ public class Project {
     public Double getPriceWithDiscount() {
         Double priceWithDiscount = this.price * ((100 - this.discount) / 100);
         return priceWithDiscount;
+    }
+
+    public void finishProject() {
+        this.isFinished = true;
     }
 }
