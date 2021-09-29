@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
-@Table(name = "project_items")
+@Table(name = "db_items")
 @ToString
 @Getter
 @Setter
@@ -22,6 +22,7 @@ public class Item {
     @OneToOne(cascade = CascadeType.ALL)
     private Sale sale;
 
+    @Column(name = "item_quantity")
     private int quantity;
 
     public void setItem(Sale sale, int quantity) {

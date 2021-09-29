@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "my_services")
+@Table(name = "db_services")
 @ToString
 @EntityListeners(AuditingEntityListener.class)
 public class Services extends Sale {

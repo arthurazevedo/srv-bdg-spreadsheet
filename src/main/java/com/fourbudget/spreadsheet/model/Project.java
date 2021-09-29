@@ -20,7 +20,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "projects")
+@Table(name = "db_projects")
 @ToString
 @EntityListeners(AuditingEntityListener.class)
 public class Project {
@@ -35,8 +35,11 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(name = "project_name")
     private String name;
     private boolean isFinished;
+    @Column(name = "project_email")
     private String email;
     private Double price;
     private Double discount;

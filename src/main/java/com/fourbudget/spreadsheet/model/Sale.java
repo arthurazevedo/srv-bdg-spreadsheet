@@ -27,14 +27,15 @@ public abstract class Sale implements Serializable {
     @JsonProperty("user_id")
     protected Long userId;
 
-    @Column(length = 50, nullable = false)
+    @Column(name = "sale_name", length = 50, nullable = false)
     @JsonProperty("name")
     protected String name;
 
+    @Column(name = "sale_code")
     @JsonProperty("code")
     protected String code;
 
-    @Column(length = 200)
+    @Column(name = "sale_description", length = 200)
     @JsonProperty("description")
     protected String description;
 
@@ -49,6 +50,7 @@ public abstract class Sale implements Serializable {
     @JsonProperty("price")
     protected Double price;
 
+    @Column(name = "sale_path")
     @JsonProperty("path")
     protected String path;
 

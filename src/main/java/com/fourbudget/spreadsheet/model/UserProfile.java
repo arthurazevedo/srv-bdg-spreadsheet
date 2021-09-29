@@ -14,16 +14,16 @@ import javax.persistence.Table;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users_profiles")
+@Table(name = "db_users_profiles")
 public class UserProfile {
 
     @Id
     private Long id;
 
-    @Column(length = 50, nullable = false)
+    @Column(name = "user_name", length = 50, nullable = false)
     private String name;
 
-    @Column(length = 50, unique = true, nullable = false)
+    @Column(name = "user_email", length = 50, unique = true, nullable = false)
     private String email;
 
     public UserProfile(UserProfileDTO upDto) {

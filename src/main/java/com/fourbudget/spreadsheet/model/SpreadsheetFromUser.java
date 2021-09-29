@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "su_relations")
+@Table(name = "db_su_relations")
 public class SpreadsheetFromUser {
 
     @Id

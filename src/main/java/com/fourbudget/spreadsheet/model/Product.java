@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Entity
 @Data
 @NoArgsConstructor
-@Table(name = "my_products")
+@Table(name = "db_products")
 @ToString
 public class Product extends Sale {
 

@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "spreadsheets")
+@Table(name = "db_spreadsheets")
 public class Spreadsheet {
 
     @Id
