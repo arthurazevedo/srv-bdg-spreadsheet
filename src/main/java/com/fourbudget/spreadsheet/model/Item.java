@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
@@ -32,5 +33,18 @@ public class Item {
     public Double getItemPrice() {
         Double totalPrice = this.sale.getPrice() * this.quantity;
         return totalPrice;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Item)) return false;
+        Item item = (Item) o;
+        return getQuantity() == item.getQuantity() && getSale().equals(item.getSale());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSale(), getQuantity());
     }
 }

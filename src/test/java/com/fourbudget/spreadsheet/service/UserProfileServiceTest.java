@@ -22,6 +22,7 @@ public class UserProfileServiceTest {
     @Autowired
     @MockBean
     private UserProfileRepository upRepository;
+
     @Autowired
     private UserProfileService upService;
 

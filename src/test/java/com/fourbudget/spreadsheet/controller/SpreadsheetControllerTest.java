@@ -40,21 +40,20 @@ public class SpreadsheetControllerTest {
     private SpreadsheetFromUser suRelation;
 
     @BeforeEach
-    void init() {
+    public void init() {
         this.spreadsheetController = new SpreadsheetController(this.spreadsheetService);
         this.userProfileTest = new UserProfile(new Long(1), "test", "test@test");
         this.spreadsheetTest = new Spreadsheet(new Long(1), "test");
         this.suDtoTest = new SpreadsheetUserDTO("test", new Long(1));
         this.suRelation = new SpreadsheetFromUser(userProfileTest, spreadsheetTest);
-
     }
 
     @Test
-    void contextLoads() {
+    public void contextLoads() {
     }
 
     @Test
-    void postSpreadsheet() throws Exception {
+    public void postSpreadsheet() throws Exception {
 
         given(this.spreadsheetService.registerSpreadsheetLink(suDtoTest)).willReturn(suRelation);
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(this.spreadsheetController).build();
@@ -68,7 +67,7 @@ public class SpreadsheetControllerTest {
     }
 
     @Test
-    void getSpreadsheetByUserId() throws Exception {
+    public void getSpreadsheetByUserId() throws Exception {
 
         given(this.spreadsheetService.findByUserId(this.userProfileTest.getId())).willReturn(this.spreadsheetTest);
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(this.spreadsheetController).build();

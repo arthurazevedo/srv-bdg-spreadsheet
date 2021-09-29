@@ -2,6 +2,7 @@ package com.fourbudget.spreadsheet.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fourbudget.spreadsheet.config.error.SpreadsheetApplicationException;
+import com.fourbudget.spreadsheet.model.dto.ProjectDTO;
 import com.fourbudget.spreadsheet.util.messages.ErrorMessageProject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,8 +47,8 @@ public class Project {
     private List<Item> itemsList;
 
     public Project(Long userId, List<Item> itemsList, String email, String name, Double price, Double discount) {
+        this.validatePrice(itemsList, price);
         this.itemsList = itemsList;
-        this.validatePrice(price);
         this.price = price;
         this.userId = userId;
         this.email = email;
@@ -55,15 +56,23 @@ public class Project {
         this.discount = discount;
     }
 
-    public void validatePrice(Double expectedPrice) {
+    public void validatePrice(List<Item> itemsList, Double expectedPrice) {
         Double actualPrice = new Double(0);
-        for (Item item : this.itemsList) {
+        for (Item item : itemsList) {
             actualPrice += item.getItemPrice();
         }
 
         if (!actualPrice.equals(expectedPrice)) {
             throw new SpreadsheetApplicationException(HttpStatus.OK, ErrorMessageProject.ERROR_MESSAGE_NOT_MATCHING_PRICE);
         }
+    }
+
+    public void updateProject(List<Item> itemsList, ProjectDTO projectDTO) {
+        this.validatePrice(itemsList, projectDTO.getPrice());
+        this.name = projectDTO.getName();
+        this.itemsList = itemsList;
+        this.email = projectDTO.getEmail();
+        this.discount = projectDTO.getDiscount();
     }
 
     public Double getPriceWithDiscount() {

@@ -28,7 +28,6 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final SaleRepository saleRepository;
 
-
     public Project createProject(Long userId, ProjectDTO projectDTO) {
         List<ItemDTO> itemsDTOList = projectDTO.getListItemDTO();
         List<Item> itemsList = this.fillItemsList(itemsDTOList);
@@ -47,7 +46,7 @@ public class ProjectService {
             Item item = new Item();
 
             Sale sale = this.saleRepository.findById(saleId)
-                    .orElseThrow(() -> new SpreadsheetApplicationException(HttpStatus.NOT_FOUND, ErrorMessageProductOrService.ERROR_MESSAGE_PRODUCT_SERVICE_NOT_EXISTS));
+                    .orElseThrow(() -> new SpreadsheetApplicationException(HttpStatus.NOT_FOUND, ErrorMessageProductOrService.ERROR_MESSAGE_PRODUCT_SERVICE_DOES_NOT_EXIST));
 
             item.setItem(sale, quantity);
             this.itemRepository.save(item);
@@ -61,8 +60,8 @@ public class ProjectService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new SpreadsheetApplicationException(HttpStatus.NOT_FOUND, ErrorMessageProject.ERROR_MESSAGE_PROJECT_DOESNT_EXIST));
 
-        List<Item> itens = fillItemsList(projectDTO.getListItemDTO());
-        project.setItemsList(itens);
+        List<Item> items = fillItemsList(projectDTO.getListItemDTO());
+        project.updateProject(items, projectDTO);
         projectRepository.save(project);
 
         return project;
