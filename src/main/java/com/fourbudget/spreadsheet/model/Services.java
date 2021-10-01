@@ -21,7 +21,7 @@ public class Services extends Sale {
     private String type;
     private String address;
 
-    public Services(Long userId, String name, String code, String description, String imageUrl, boolean isFavorite, Double price, String path, String phone, String type, String address) {
+    public Services(String userId, String name, String code, String description, String imageUrl, boolean isFavorite, Double price, String path, String phone, String type, String address) {
         this.userId = userId;
         this.name = name;
         this.code = code;

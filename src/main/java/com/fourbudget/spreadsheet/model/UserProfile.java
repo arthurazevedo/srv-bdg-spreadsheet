@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class UserProfile {
 
     @Id
-    private Long id;
+    private String id;
 
     @Column(name = "user_name", length = 50, nullable = false)
     private String name;

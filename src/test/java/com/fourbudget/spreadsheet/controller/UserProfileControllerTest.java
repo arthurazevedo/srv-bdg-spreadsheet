@@ -36,7 +36,7 @@ public class UserProfileControllerTest {
 
     @Test
     void succesfullyCreateUser() throws Exception {
-        UserProfile userProfileTest = new UserProfile(new Long(1), "test", "test@test");
+        UserProfile userProfileTest = new UserProfile("1", "test", "test@test");
         UserProfileDTO upTest = new UserProfileDTO(userProfileTest);
         given(this.upService.createUser(upTest)).willReturn(userProfileTest);
 

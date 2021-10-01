@@ -20,7 +20,9 @@ public class UserProfileService {
             throw new SpreadsheetApplicationException(HttpStatus.OK, ErrorMessageUserProfile.ERROR_MESSAGE_USER_ALREADY_EXISTS);
         }
         UserProfile userProfile = new UserProfile(userProfileDto);
+        System.out.println("Before -> " + userProfile);
         this.userProfileRepository.save(userProfile);
+        System.out.println("After -> " + userProfile);
         return userProfile;
     }
 

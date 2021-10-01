@@ -17,7 +17,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public List<Product> getProductsList(Long userId) {
+    public List<Product> getProductsList(String userId) {
         Optional<List<Product>> productsOptional = this.productRepository.findByUserId(userId);
         List<Product> products = productsOptional.orElseThrow(() -> new SpreadsheetApplicationException(HttpStatus.NO_CONTENT, ErrorMessageProduct.ERROR_PRODUCTS_NOT_FOUND));
 

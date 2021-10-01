@@ -32,7 +32,7 @@ public class UserProfileServiceTest {
 
     @Test
     public void succesfullyCreateUser(){
-        UserProfile userTest = new UserProfile(new Long(1), "test", "test@test");
+        UserProfile userTest = new UserProfile("1", "test", "test@test");
         UserProfileDTO upDtoTest = new UserProfileDTO(userTest);
         Optional<UserProfile> optUserProfile = Optional.of(userTest);
         given(this.upRepository.findById(userTest.getId())).willReturn(optUserProfile);
@@ -41,7 +41,7 @@ public class UserProfileServiceTest {
     }
     @Test
     public void createUserWithExistingIdThrowsException(){
-        UserProfile userTest = new UserProfile(new Long(1), "test", "test@test");
+        UserProfile userTest = new UserProfile("1", "test", "test@test");
         UserProfileDTO upDtoTest = new UserProfileDTO(userTest);
         given(this.upRepository.existsById(userTest.getId())).willReturn(true);
 

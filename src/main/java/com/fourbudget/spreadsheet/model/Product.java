@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @ToString
 public class Product extends Sale {
 
-    public Product(Long userId, String name, String code, String description, String imageUrl, boolean isFavorite, Double price, String path) {
+    public Product(String userId, String name, String code, String description, String imageUrl, boolean isFavorite, Double price, String path) {
         this.userId = userId;
         this.name = name;
         this.code = code;

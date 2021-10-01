@@ -18,7 +18,7 @@ public class ServicesService {
     private final ServicesRepository servicesRepository;
 
 
-    public List<Services> getServicosList(Long userId) {
+    public List<Services> getServicosList(String userId) {
         Optional<List<Services>> servicesOptional = this.servicesRepository.findByUserId(userId);
 
         List<Services> services = servicesOptional.orElseThrow(() -> new SpreadsheetApplicationException(HttpStatus.NO_CONTENT, ErrorMessageService.ERROR_SERVICES_NOT_FOUND));

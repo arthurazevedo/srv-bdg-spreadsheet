@@ -28,7 +28,7 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final SaleRepository saleRepository;
 
-    public Project createProject(Long userId, ProjectDTO projectDTO) {
+    public Project createProject(String userId, ProjectDTO projectDTO) {
         List<ItemDTO> itemsDTOList = projectDTO.getListItemDTO();
         List<Item> itemsList = this.fillItemsList(itemsDTOList);
 

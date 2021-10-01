@@ -28,7 +28,7 @@ public class SpreadsheetController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<Spreadsheet> getSpreadSheetByUserId(@PathVariable Long userId) {
+    public ResponseEntity<Spreadsheet> getSpreadSheetByUserId(@PathVariable String userId) {
         Spreadsheet spreadsheet = this.spreadsheetService.findByUserId(userId);
         return new ResponseEntity<>(spreadsheet, HttpStatus.OK);
     }

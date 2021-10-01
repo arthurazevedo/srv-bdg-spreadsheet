@@ -66,7 +66,7 @@ public class ProjectServiceTest {
         when(this.saleRepository.findById(product.getId())).thenReturn(Optional.of(product));
         when(this.saleRepository.findById(service.getId())).thenReturn(Optional.of(service));
 
-        Project project = this.projectService.createProject(new Long(1), projectDTO);
+        Project project = this.projectService.createProject("1", projectDTO);
         Assertions.assertNotNull(project.getName());
     }
 
@@ -79,11 +79,11 @@ public class ProjectServiceTest {
         when(this.saleRepository.findById(service.getId())).thenReturn(Optional.of(service));
 
         Assertions.assertThrows(SpreadsheetApplicationException.class, () -> {
-            this.projectService.createProject(new Long(1), projectDTO);
+            this.projectService.createProject("1", projectDTO);
         });
 
         try {
-            this.projectService.createProject(new Long(1), projectDTO);
+            this.projectService.createProject("1", projectDTO);
         } catch (SpreadsheetApplicationException e) {
             Assertions.assertEquals(ErrorMessageProject.ERROR_MESSAGE_NOT_MATCHING_PRICE, e.getMessage());
         }
@@ -97,7 +97,7 @@ public class ProjectServiceTest {
         when(this.saleRepository.findById(product.getId())).thenReturn(Optional.of(product));
         when(this.saleRepository.findById(service.getId())).thenReturn(Optional.of(service));
 
-        Project project1 = this.projectService.createProject(new Long(1), projectDTO);
+        Project project1 = this.projectService.createProject("1", projectDTO);
         when(this.projectRepository.findById(any(Long.class))).thenReturn(Optional.of(project1));
         List<Item> oldItemsList = project1.getItemsList();
 
@@ -114,7 +114,7 @@ public class ProjectServiceTest {
 
         when(this.saleRepository.findById(product.getId())).thenReturn(Optional.of(product));
         when(this.saleRepository.findById(service.getId())).thenReturn(Optional.of(service));
-        Project project1 = this.projectService.createProject(new Long(1), projectDTO);
+        Project project1 = this.projectService.createProject("1", projectDTO);
         when(this.projectRepository.findById(any(Long.class))).thenReturn(Optional.of(project1));
 
         ProjectDTO projectDTO2 = ReturnDefaultObjectsUtil.returnProjectDTO2(new Double(5000));
@@ -138,7 +138,7 @@ public class ProjectServiceTest {
         when(this.saleRepository.findById(product.getId())).thenReturn(Optional.of(product));
         when(this.saleRepository.findById(service.getId())).thenReturn(Optional.of(service));
 
-        Project project1 = this.projectService.createProject(new Long(1), projectDTO);
+        Project project1 = this.projectService.createProject("1", projectDTO);
         when(this.projectRepository.findById(any(Long.class))).thenReturn(Optional.of(project1));
         boolean oldIsFinished = project1.isFinished();
 

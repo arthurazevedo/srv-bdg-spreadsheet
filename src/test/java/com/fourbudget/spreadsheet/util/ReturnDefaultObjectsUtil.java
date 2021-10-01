@@ -16,7 +16,7 @@ public class ReturnDefaultObjectsUtil {
         Product product = new Product();
 
         product.setId(new Long(10));
-        product.setUserId(new Long(1));
+        product.setUserId("1");
         product.setName("Escova");
         product.setCode("1000");
         product.setDescription("dental");
@@ -36,7 +36,7 @@ public class ReturnDefaultObjectsUtil {
         service.setPhone("9999-8888");
 
         service.setId(new Long(20));
-        service.setUserId(new Long(1));
+        service.setUserId("1");
         service.setName("Escolta");
         service.setCode("1049");
         service.setDescription("Escolta de onibus");
@@ -50,7 +50,7 @@ public class ReturnDefaultObjectsUtil {
 
     public static ProjectDTO returnProjectDTO1(List<ItemDTO> listItemDTO, Double price) {
         ProjectDTO projectDTO = new ProjectDTO();
-        projectDTO.setUserId(new Long(1));
+        projectDTO.setUserId("1");
         projectDTO.setListItemDTO(listItemDTO);
         projectDTO.setName("Padrão");
         projectDTO.setEmail("test@test.com");
@@ -62,7 +62,7 @@ public class ReturnDefaultObjectsUtil {
 
     public static ProjectDTO returnProjectDTO2(Double price) {
         ProjectDTO projectDTO = new ProjectDTO();
-        projectDTO.setUserId(new Long(1));
+        projectDTO.setUserId("1");
         projectDTO.setListItemDTO(returnListItemDTO2());
         projectDTO.setName("Alternativo");
         projectDTO.setEmail("test@test.com");
