@@ -45,11 +45,11 @@ public class SpreadsheetServiceTest {
 
     @Test
     public void succesfullyCreateSURelation() throws IOException, GeneralSecurityException {
-        UserProfile userTest = new UserProfile(new Long(1), "test", "test@test");
+        UserProfile userTest = new UserProfile("1", "test", "test@test");
         Optional<UserProfile> optUserProfile = Optional.of(userTest);
         when(this.userProfileRepository.findById(userTest.getId())).thenReturn(optUserProfile);
 
-        SpreadsheetUserDTO suDto = new SpreadsheetUserDTO("1IqjNBIRu8Ks9AT_tEpwOArHZryT0y7w5jiJXvVuek-M", new Long(1));
+        SpreadsheetUserDTO suDto = new SpreadsheetUserDTO("1IqjNBIRu8Ks9AT_tEpwOArHZryT0y7w5jiJXvVuek-M", "1");
 
         Assertions.assertEquals(this.spreadsheetService.registerSpreadsheetLink(suDto).getUserProfile(), userTest);
         Assertions.assertEquals(this.spreadsheetService.registerSpreadsheetLink(suDto).getSpreadsheet().getSpreadsheetLink(), suDto.getSpreadsheetLink());
@@ -57,7 +57,7 @@ public class SpreadsheetServiceTest {
 
     @Test
     public void userNotFoundException() {
-        SpreadsheetUserDTO suDto = new SpreadsheetUserDTO("test", new Long(1));
+        SpreadsheetUserDTO suDto = new SpreadsheetUserDTO("test", "1");
 
         Assertions.assertThrows(SpreadsheetApplicationException.class, () -> {
             this.spreadsheetService.registerSpreadsheetLink(suDto);

@@ -37,7 +37,7 @@ public class SpreadsheetService {
 
     @Transactional
     public SpreadsheetFromUser registerSpreadsheetLink(SpreadsheetUserDTO spreadsheetUserDTO) throws IOException, GeneralSecurityException {
-        Long idProfileUser = spreadsheetUserDTO.getUserId();
+        String idProfileUser = spreadsheetUserDTO.getUserId();
         String link = spreadsheetUserDTO.getSpreadsheetLink();
         Optional<UserProfile> optUserProfile = this.userProfileRepository.findById(idProfileUser);
         if (!optUserProfile.isPresent()) {
@@ -69,7 +69,7 @@ public class SpreadsheetService {
         return suRelation;
     }
 
-    private void deleteUserById(Long idProfileUser) {
+    private void deleteUserById(String idProfileUser) {
         this.saleRepository.deleteAllByUserId(idProfileUser);
     }
 
@@ -77,12 +77,12 @@ public class SpreadsheetService {
         return this.spreadsheetFromUserRepository.findAll();
     }
 
-    public void populate(String spreadsheet, Long userId) throws GeneralSecurityException, IOException {
+    public void populate(String spreadsheet, String userId) throws GeneralSecurityException, IOException {
         this.populateProducts(spreadsheet, userId, ProductConstants.PRODUCT_TAB_NAME);
         this.populateProducts(spreadsheet, userId, ServicesConstants.SERVICES_TAB_NAME);
     }
 
-    private void populateProducts(String spreadsheet, Long userId, String tab) throws IOException, GeneralSecurityException {
+    private void populateProducts(String spreadsheet, String userId, String tab) throws IOException, GeneralSecurityException {
         Sheets sheets = GoogleAuthorizeUtil.getSheetsService();
         final String range = "'" + tab + "'!A:Z";
 
@@ -133,7 +133,7 @@ public class SpreadsheetService {
         }
     }
 
-    public Spreadsheet findByUserId(Long userId) {
+    public Spreadsheet findByUserId(String userId) {
         return this.spreadsheetFromUserRepository.findOneByUserProfileId(userId).
                 orElseThrow(() -> new NoSuchElementException(ErrorMessageSpreadsheet.ERROR_USER_DOESNT_EXIST)).getSpreadsheet();
     }

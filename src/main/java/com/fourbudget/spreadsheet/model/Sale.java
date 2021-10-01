@@ -25,7 +25,7 @@ public abstract class Sale implements Serializable {
 
     @Column(nullable = false)
     @JsonProperty("user_id")
-    protected Long userId;
+    protected String userId;
 
     @Column(name = "sale_name", length = 50, nullable = false)
     @JsonProperty("name")

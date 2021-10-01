@@ -18,7 +18,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/user/{userId}")
-    public List<Product> getProducts(@PathVariable Long userId) {
+    public List<Product> getProducts(@PathVariable String userId) {
         return this.productService.getProductsList(userId);
     }
 }

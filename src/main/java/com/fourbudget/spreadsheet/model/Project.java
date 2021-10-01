@@ -45,11 +45,11 @@ public class Project {
     private Double price;
     private Double discount;
     @Column(nullable = false)
-    private Long userId;
+    private String userId;
     @OneToMany(targetEntity = Item.class, fetch = FetchType.EAGER)
     private List<Item> itemsList;
 
-    public Project(Long userId, List<Item> itemsList, String email, String name, Double price, Double discount) {
+    public Project(String userId, List<Item> itemsList, String email, String name, Double price, Double discount) {
         this.validatePrice(itemsList, price);
         this.itemsList = itemsList;
         this.price = price;

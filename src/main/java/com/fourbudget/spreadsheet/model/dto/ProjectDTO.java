@@ -11,7 +11,7 @@ import java.util.List;
 public class ProjectDTO {
 
     @NotNull
-    private Long userId;
+    private String userId;
 
     @NotNull
     @NotEmpty

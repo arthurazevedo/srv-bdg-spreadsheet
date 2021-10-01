@@ -18,7 +18,7 @@ public class ServicesController {
     private final ServicesService servicesService;
 
     @GetMapping("/user/{userId}")
-    public List<Services> getServices(@PathVariable Long userId) {
+    public List<Services> getServices(@PathVariable String userId) {
         return this.servicesService.getServicosList(userId);
     }
 }

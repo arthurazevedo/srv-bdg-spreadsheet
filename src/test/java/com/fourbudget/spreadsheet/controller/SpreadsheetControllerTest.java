@@ -42,9 +42,9 @@ public class SpreadsheetControllerTest {
     @BeforeEach
     public void init() {
         this.spreadsheetController = new SpreadsheetController(this.spreadsheetService);
-        this.userProfileTest = new UserProfile(new Long(1), "test", "test@test");
+        this.userProfileTest = new UserProfile("1", "test", "test@test");
         this.spreadsheetTest = new Spreadsheet(new Long(1), "test");
-        this.suDtoTest = new SpreadsheetUserDTO("test", new Long(1));
+        this.suDtoTest = new SpreadsheetUserDTO("test", "1");
         this.suRelation = new SpreadsheetFromUser(userProfileTest, spreadsheetTest);
     }
 

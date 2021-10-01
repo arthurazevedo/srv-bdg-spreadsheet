@@ -17,5 +17,5 @@ public class SpreadsheetUserDTO {
     private String spreadsheetLink;
 
     @NotNull
-    private Long userId;
+    private String userId;
 }
