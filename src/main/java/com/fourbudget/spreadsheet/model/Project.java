@@ -73,6 +73,7 @@ public class Project {
 
     public void updateProject(List<Item> itemsList, ProjectDTO projectDTO) {
         this.validatePrice(itemsList, projectDTO.getPrice());
+        this.price = projectDTO.getPrice();
         this.name = projectDTO.getName();
         this.itemsList = itemsList;
         this.email = projectDTO.getEmail();
