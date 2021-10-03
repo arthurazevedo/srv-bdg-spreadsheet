@@ -50,7 +50,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void sucessfullyGetServicosList() {
+    public void sucessfullyGetProductsList() {
         Mockito.when(productRepository.findByUserId(Mockito.any())).thenReturn(Optional.of(productList));
         List<Product> returned = productService.getProductsList(userId);
         Assert.assertEquals(1, returned.size());
@@ -58,14 +58,14 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void errorGetServicosList() {
+    public void errorGetProductsList() {
         expectedException.expect(SpreadsheetApplicationException.class);
         Mockito.when(productRepository.findByUserId(Mockito.any())).thenReturn(Optional.of(new ArrayList<Product>()));
         productService.getProductsList(userId);
     }
 
     @Test
-    public void errorGetServicosListEmpty() {
+    public void errorGetProductsListEmpty() {
         expectedException.expect(SpreadsheetApplicationException.class);
         Mockito.when(productRepository.findByUserId(Mockito.any())).thenReturn(Optional.empty());
         productService.getProductsList(userId);
