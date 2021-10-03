@@ -50,7 +50,6 @@ public class ReturnDefaultObjectsUtil {
 
     public static ProjectDTO returnProjectDTO1(List<ItemDTO> listItemDTO, Double price) {
         ProjectDTO projectDTO = new ProjectDTO();
-        projectDTO.setUserId("1");
         projectDTO.setListItemDTO(listItemDTO);
         projectDTO.setName("Padrão");
         projectDTO.setEmail("test@test.com");
@@ -62,7 +61,6 @@ public class ReturnDefaultObjectsUtil {
 
     public static ProjectDTO returnProjectDTO2(Double price) {
         ProjectDTO projectDTO = new ProjectDTO();
-        projectDTO.setUserId("1");
         projectDTO.setListItemDTO(returnListItemDTO2());
         projectDTO.setName("Alternativo");
         projectDTO.setEmail("test@test.com");

@@ -23,24 +23,4 @@ public class ProjectController {
         Project project = this.projectService.createProject(userId, projectDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(project);
     }
-
-    @GetMapping("/{projectId}")
-    public ResponseEntity<Project> getProject(@PathVariable("projectId") Long projectId) {
-        Project project = this.projectService.getProject(projectId);
-        return ResponseEntity.status(HttpStatus.OK).body(project);
-    }
-
-    @PutMapping("/{projectId}")
-    public ResponseEntity<Project> putProject(@PathVariable("projectId") Long projectId,
-                                              @RequestBody ProjectDTO projectDTO) {
-        Project project = projectService.updateProject(projectId, projectDTO);
-        return ResponseEntity.status(HttpStatus.OK).body(project);
-    }
-
-    @PatchMapping("/{projectId}")
-    public ResponseEntity<Project> finishProject(@PathVariable("projectId") Long projectId) {
-        Project project = projectService.finishProject(projectId);
-        return ResponseEntity.status(HttpStatus.OK).body(project);
-    }
-
 }
