@@ -9,10 +9,6 @@ import java.util.List;
 
 @Data
 public class ProjectDTO {
-
-    @NotNull
-    private String userId;
-
     @NotNull
     @NotEmpty
     private List<ItemDTO> listItemDTO;

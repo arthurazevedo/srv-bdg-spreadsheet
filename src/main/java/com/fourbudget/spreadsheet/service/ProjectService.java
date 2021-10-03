@@ -7,33 +7,37 @@ import com.fourbudget.spreadsheet.model.Sale;
 import com.fourbudget.spreadsheet.model.dto.ItemDTO;
 import com.fourbudget.spreadsheet.model.dto.ProjectDTO;
 import com.fourbudget.spreadsheet.repository.ItemRepository;
-import com.fourbudget.spreadsheet.repository.ProjectRepository;
 import com.fourbudget.spreadsheet.repository.SaleRepository;
-import com.fourbudget.spreadsheet.util.messages.ErrorMessageProduct;
+import com.fourbudget.spreadsheet.util.EmailSender;
 import com.fourbudget.spreadsheet.util.messages.ErrorMessageProductOrService;
-import com.fourbudget.spreadsheet.util.messages.ErrorMessageProject;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service
 public class ProjectService {
 
     private final ItemRepository itemRepository;
-    private final ProjectRepository projectRepository;
     private final SaleRepository saleRepository;
+
+    @Autowired
+    EmailSender emailSender;
 
     public Project createProject(String userId, ProjectDTO projectDTO) {
         List<ItemDTO> itemsDTOList = projectDTO.getListItemDTO();
         List<Item> itemsList = this.fillItemsList(itemsDTOList);
 
-        Project project = new Project(userId, itemsList, projectDTO.getEmail(), projectDTO.getName(), projectDTO.getPrice(), projectDTO.getDiscount());
-        this.projectRepository.save(project);
+        Project project = new Project(itemsList, projectDTO.getEmail(), projectDTO.getName(), projectDTO.getPrice(), projectDTO.getDiscount());
+
+        emailSender.sendEmail(project);
+
         return project;
     }
 
@@ -54,36 +58,5 @@ public class ProjectService {
         }
 
         return itemsList;
-    }
-
-    public Project updateProject(Long projectId, ProjectDTO projectDTO) {
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new SpreadsheetApplicationException(HttpStatus.NOT_FOUND, ErrorMessageProject.ERROR_MESSAGE_PROJECT_DOESNT_EXIST));
-
-        List<Item> items = fillItemsList(projectDTO.getListItemDTO());
-        project.updateProject(items, projectDTO);
-        projectRepository.save(project);
-
-        return project;
-    }
-
-    public Project getProject(Long projectId) {
-        Optional<Project> projectOptional = this.projectRepository.findById(projectId);
-
-        if (!projectOptional.isPresent()) {
-            throw new SpreadsheetApplicationException(HttpStatus.OK, ErrorMessageProduct.ERROR_PRODUCTS_NOT_FOUND);
-        }
-
-        return projectOptional.orElseThrow(() -> new SpreadsheetApplicationException(HttpStatus.NO_CONTENT, ErrorMessageProduct.ERROR_PRODUCTS_NOT_FOUND));
-    }
-
-    public Project finishProject(Long projectId) {
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new SpreadsheetApplicationException(HttpStatus.NOT_FOUND, ErrorMessageProject.ERROR_MESSAGE_PROJECT_DOESNT_EXIST));
-
-        project.finishProject();
-        projectRepository.save(project);
-
-        return project;
     }
 }
