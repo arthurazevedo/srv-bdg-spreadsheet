@@ -44,7 +44,7 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void getServices() {
+    public void getProducts() {
         Mockito.when(productRepository.findByUserId(Mockito.any())).thenReturn(Optional.of(productList));
         List<Product> returned = productController.getProducts(userId);
         Assert.assertEquals(1, returned.size());
