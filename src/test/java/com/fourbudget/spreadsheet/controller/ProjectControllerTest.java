@@ -1,24 +1,23 @@
-package com.fourbudget.spreadsheet.service;
+package com.fourbudget.spreadsheet.controller;
 
-import com.fourbudget.spreadsheet.config.error.SpreadsheetApplicationException;
 import com.fourbudget.spreadsheet.model.Project;
 import com.fourbudget.spreadsheet.model.Sale;
 import com.fourbudget.spreadsheet.model.dto.ItemDTO;
 import com.fourbudget.spreadsheet.model.dto.ProjectDTO;
 import com.fourbudget.spreadsheet.repository.ItemRepository;
 import com.fourbudget.spreadsheet.repository.SaleRepository;
+import com.fourbudget.spreadsheet.service.ProjectService;
 import com.fourbudget.spreadsheet.util.EmailSender;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +28,13 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
-public class ProjectServiceTest {
+public class ProjectControllerTest {
 
+    @Mock
+    private ProjectController projectController;
+
+    @Mock
     private ProjectService projectService;
-
-    private ProjectDTO projectDTO;
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     @Mock
     private SaleRepository saleRepository;
@@ -48,13 +46,16 @@ public class ProjectServiceTest {
     private EmailSender emailSender;
 
     @Mock
+    private ProjectDTO projectDTO;
+
+    @Mock
     private Sale sale;
 
     @Before
-    public void init() {
+    public void before() {
         MockitoAnnotations.initMocks(this);
-
         projectService = new ProjectService(itemRepository, saleRepository, emailSender);
+        projectController = new ProjectController(projectService);
 
         projectDTO = new ProjectDTO();
         List<ItemDTO> itemDTOList = new ArrayList<>();
@@ -72,24 +73,15 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void successfullyCreateProject() {
-        when(saleRepository.findById(Mockito.any())).thenReturn(Optional.of(sale));
-        when(itemRepository.save(Mockito.any())).thenReturn(null);
-        doNothing().when(emailSender).sendEmail(Mockito.any());
+    public void postProject() {
+       when(saleRepository.findById(Mockito.any())).thenReturn(Optional.of(sale));
+       when(itemRepository.save(Mockito.any())).thenReturn(null);
+       doNothing().when(emailSender).sendEmail(Mockito.any());
 
-        Project project = projectService.createProject(projectDTO);
+       ResponseEntity<Project> projectResponse = projectController.postProject("1", projectDTO);
 
-        Assertions.assertNotNull(project);
+       Project project = projectResponse.getBody();
+
+       Assertions.assertNotNull(project);
     }
-
-    @Test
-    public void errorCreatingProjectWithInvalidPrice() {
-        expectedException.expect(SpreadsheetApplicationException.class);
-        when(saleRepository.findById(Mockito.any())).thenReturn(Optional.empty());
-
-        Project project = projectService.createProject(projectDTO);
-
-        Assertions.assertNotNull(project);
-    }
-
 }

@@ -20,7 +20,7 @@ public class ProjectController {
     @PostMapping("/{userId}")
     public ResponseEntity<Project> postProject(@PathVariable("userId") String userId,
                                                @RequestBody @Valid ProjectDTO projectDTO) {
-        Project project = this.projectService.createProject(userId, projectDTO);
+        Project project = this.projectService.createProject(projectDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(project);
     }
 }

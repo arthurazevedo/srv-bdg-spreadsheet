@@ -73,10 +73,6 @@ public class SpreadsheetService {
         this.saleRepository.deleteAllByUserId(idProfileUser);
     }
 
-    public List<SpreadsheetFromUser> findAllSURelations() {
-        return this.spreadsheetFromUserRepository.findAll();
-    }
-
     public void populate(String spreadsheet, String userId) throws GeneralSecurityException, IOException {
         this.populateProducts(spreadsheet, userId, ProductConstants.PRODUCT_TAB_NAME);
         this.populateProducts(spreadsheet, userId, ServicesConstants.SERVICES_TAB_NAME);

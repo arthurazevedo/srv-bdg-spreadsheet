@@ -13,8 +13,6 @@ import com.fourbudget.spreadsheet.util.messages.ErrorMessageProductOrService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,7 +28,7 @@ public class ProjectService {
     @Autowired
     EmailSender emailSender;
 
-    public Project createProject(String userId, ProjectDTO projectDTO) {
+    public Project createProject(ProjectDTO projectDTO) {
         List<ItemDTO> itemsDTOList = projectDTO.getListItemDTO();
         List<Item> itemsList = this.fillItemsList(itemsDTOList);
 
