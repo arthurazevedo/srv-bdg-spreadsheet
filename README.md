@@ -7,7 +7,7 @@ Desenvolvido como projeto da disciplina Engenharia de Software da Universidade F
 A API funciona através do [Heroku Free](https://srv-budget-dev.herokuapp.com/ "Heroku Free"), mas também pode ser executada localmente utilizando o banco de dados PostgreSQL, já configurado, e o framework SpringBoot.
 ### Executar Spring Boot
 `	 mvn spring-boot:run `
-#Tecnologias
+# Tecnologias
 * **Java** - Linguagem de Programação
 * **SpringBoot** - Framework
 * **PostegreSQL** - Database
